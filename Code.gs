@@ -132,8 +132,12 @@ function doPost(e) {
 
 function doGet(e) {
   try {
-    const callback = e && e.parameter && e.parameter.callback;
-    const data = buildSummary_();
+    const params = e && e.parameter ? e.parameter : {};
+    const callback = /^[a-zA-Z_$][0-9a-zA-Z_$\.]*$/.test(params.callback || '')
+      ? params.callback : '';
+    const data = params.action === 'instagramFeed'
+      ? getInstagramFeed_()
+      : buildSummary_();
     const body = callback
       ? callback + '(' + JSON.stringify(data) + ');'
       : JSON.stringify(data);
@@ -143,8 +147,98 @@ function doGet(e) {
         ? ContentService.MimeType.JAVASCRIPT
         : ContentService.MimeType.JSON);
   } catch (err) {
-    return json_({ok: false, message: String(err)});
+    return json_({ok: false, message: String(err.message || err)});
   }
+}
+
+/**
+ * Instagram feed proxy. Tokens must be stored in Apps Script > Project Settings
+ * > Script Properties. Never place Instagram access tokens in GitHub Pages code.
+ *
+ * Required properties (one token per professional account):
+ * INSTAGRAM_MESIN_ACCESS_TOKEN
+ * INSTAGRAM_ELEKTRO_ACCESS_TOKEN
+ * INSTAGRAM_KIMIA_ACCESS_TOKEN
+ * INSTAGRAM_FST_ACCESS_TOKEN
+ *
+ * Optional properties: INSTAGRAM_<KEY>_USER_ID. If omitted, /me resolves the ID.
+ * Each account must authorize the Meta app with instagram_business_basic.
+ */
+function getInstagramFeed_() {
+  const cache = CacheService.getScriptCache();
+  const cacheKey = 'fst_instagram_feed_v1';
+  const cached = cache.get(cacheKey);
+  if (cached) return JSON.parse(cached);
+
+  const props = PropertiesService.getScriptProperties();
+  const accounts = [
+    {key:'mesin', username:'mesinuibu', property:'INSTAGRAM_MESIN_ACCESS_TOKEN'},
+    {key:'elektro', username:'elektrouibu', property:'INSTAGRAM_ELEKTRO_ACCESS_TOKEN'},
+    {key:'kimia', username:'teknikkimia.uibu', property:'INSTAGRAM_KIMIA_ACCESS_TOKEN'},
+    {key:'fst', username:'fst_uibu_official', property:'INSTAGRAM_FST_ACCESS_TOKEN'}
+  ];
+
+  const result = {
+    ok:true,
+    configuredAt:new Date().toISOString(),
+    refreshMinutes:15,
+    accounts:accounts.map(account => {
+      const token = props.getProperty(account.property);
+      if (!token) return {
+        key:account.key, username:account.username, configured:false, items:[]
+      };
+      try {
+        let userId = props.getProperty('INSTAGRAM_' + account.key.toUpperCase() + '_USER_ID');
+        if (!userId) {
+          const profile = instagramApiFetch_(
+            'https://graph.instagram.com/v27.0/me?fields=user_id,username&access_token=' + encodeURIComponent(token)
+          );
+          userId = profile.user_id || profile.id;
+          if (!userId) throw new Error('ID akun tidak dikembalikan oleh Instagram API.');
+        }
+        const fields = 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp,username';
+        const url = 'https://graph.instagram.com/v27.0/' + encodeURIComponent(userId)
+          + '/media?fields=' + encodeURIComponent(fields) + '&limit=8&access_token=' + encodeURIComponent(token);
+        const response = instagramApiFetch_(url);
+        return {
+          key:account.key, username:account.username, configured:true,
+          items:(response.data || []).map(item => ({
+            id:item.id || '',
+            username:item.username || account.username,
+            caption:String(item.caption || '').slice(0,500),
+            mediaType:item.media_type || 'IMAGE',
+            mediaUrl:item.media_url || item.thumbnail_url || '',
+            permalink:item.permalink || 'https://www.instagram.com/' + account.username + '/',
+            timestamp:item.timestamp || ''
+          })).filter(item => item.mediaUrl && item.permalink)
+        };
+      } catch (error) {
+        return {
+          key:account.key, username:account.username, configured:true, items:[],
+          error:String(error.message || error).slice(0,220)
+        };
+      }
+    })
+  };
+  cache.put(cacheKey, JSON.stringify(result), 900);
+  return result;
+}
+
+function instagramApiFetch_(url) {
+  const response = UrlFetchApp.fetch(url, {
+    muteHttpExceptions:true,
+    followRedirects:true
+  });
+  const status = response.getResponseCode();
+  const body = response.getContentText();
+  let data;
+  try { data = JSON.parse(body); }
+  catch (error) { throw new Error('Respons Instagram API bukan JSON (HTTP ' + status + ').'); }
+  if (status < 200 || status >= 300 || data.error) {
+    const message = data.error && (data.error.message || data.error.error_user_msg);
+    throw new Error(message || ('Instagram API HTTP ' + status));
+  }
+  return data;
 }
 
 function buildSummary_() {
