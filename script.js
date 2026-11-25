@@ -110,3 +110,69 @@ render();
   root.addEventListener('focusin',stop);root.addEventListener('focusout',start);
   show(0);start();
 })();
+
+
+// ===== FST survey results dashboard =====
+// Set this to the deployed Google Apps Script Web App URL when the Sheet backend is ready.
+// Expected JSON: { totalResponses: 25, schoolTypes:[{label:"SMK",count:12}], programs:[...],
+// regions:[...], firstSources:[...], platforms:[...], schoolMajors:[...],
+// referrals:[...], reasons:[...] }
+const SURVEY_SUMMARY_URL = "";
+
+(function initSurveyResults(){
+  const section=document.getElementById('hasil');
+  if(!section)return;
+  const status=section.querySelector('#resultsStatus');
+  const setStatus=(message,live=false)=>{
+    status.lastElementChild.textContent=message;
+    status.classList.toggle('is-live',live);
+  };
+  if(!SURVEY_SUMMARY_URL){
+    setStatus('Belum terhubung ke Google Sheets · grafik akan aktif setelah database disambungkan');
+    return;
+  }
+  const palette=['#2478bd','#28b9b0','#f28c28','#12345b','#55b9e8','#79a8cf','#80cfc5','#dca45d'];
+  const list=(value)=>Array.isArray(value)?value:[];
+  const labelsOf=(items)=>items.map(x=>String(x.label??x.name??'Lainnya'));
+  const valuesOf=(items)=>items.map(x=>Number(x.count??x.value??0));
+  const draw=(id,items,type='bar')=>{
+    const card=document.getElementById(id)?.closest('.result-chart');
+    const canvas=document.getElementById(id);
+    const rows=list(items).filter(x=>Number(x.count??x.value??0)>0);
+    if(!canvas||!card||!rows.length)return;
+    card.classList.add('has-data');
+    const horizontal=type==='bar';
+    new Chart(canvas,{
+      type:type==='doughnut'?'doughnut':'bar',
+      data:{labels:labelsOf(rows),datasets:[{data:valuesOf(rows),backgroundColor:palette,borderRadius:horizontal?6:2,borderWidth:0,barThickness:'flex',maxBarThickness:26}]},
+      options:{
+        responsive:true,maintainAspectRatio:false,indexAxis:horizontal?'y':'x',
+        plugins:{legend:{display:type==='doughnut',position:'bottom',labels:{boxWidth:10,usePointStyle:true,font:{family:'DM Sans',size:10}}},tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+(ctx.parsed.x??ctx.parsed)+' responden'}}},
+        scales:type==='doughnut'?{}:{x:{beginAtZero:true,ticks:{precision:0,font:{size:9}},grid:{color:'#edf2f6'}},y:{ticks:{font:{size:10}},grid:{display:false}}}
+      }
+    });
+  };
+  fetch(SURVEY_SUMMARY_URL,{headers:{Accept:'application/json'}})
+    .then(response=>{if(!response.ok)throw new Error('HTTP '+response.status);return response.json();})
+    .then(payload=>{
+      const data=payload.summary||payload;
+      const total=Number(data.totalResponses||0);
+      document.getElementById('kpiTotal').textContent=total.toLocaleString('id-ID');
+      document.getElementById('kpiSchools').textContent=list(data.schoolTypes).filter(x=>x.count>0).length;
+      document.getElementById('kpiRegions').textContent=list(data.regions).filter(x=>x.count>0).length;
+      document.getElementById('kpiPrograms').textContent=list(data.programs).filter(x=>x.count>0).length;
+      draw('chartSchool',data.schoolTypes);
+      draw('chartProgram',data.programs,'doughnut');
+      draw('chartRegion',list(data.regions).slice(0,10));
+      draw('chartSource',data.firstSources);
+      draw('chartPlatform',data.platforms,'doughnut');
+      draw('chartMajor',list(data.schoolMajors).slice(0,10));
+      draw('chartReferral',data.referrals);
+      draw('chartReason',data.reasons);
+      setStatus('Data diperbarui · '+total.toLocaleString('id-ID')+' responden',true);
+    })
+    .catch(error=>{
+      console.error('Dashboard survei gagal memuat:',error);
+      setStatus('Data Google Sheets belum dapat dimuat · periksa URL dan izin Web App');
+    });
+})();
