@@ -78,12 +78,6 @@ function doPost(e) {
       if (length > limits[key]) throw new Error('Panjang kolom melebihi batas: ' + key);
     });
 
-    // Tolak pengiriman yang terlalu cepat atau timestamp yang tidak wajar.
-    const submittedAt = Date.parse(payload.submitted_at || '');
-    if (!submittedAt || Date.now() - submittedAt < 2500 || Date.now() - submittedAt > 6 * 60 * 60 * 1000) {
-      return json_({ok:false,message:'Waktu pengisian tidak valid. Muat ulang formulir dan coba kembali.'});
-    }
-
     // Rate limit global: maksimal 60 pengiriman per menit untuk seluruh microsite.
     // Ini bukan pembatas per-IP karena Apps Script Web App tidak menyediakan IP pengunjung.
     lock.waitLock(10000);
