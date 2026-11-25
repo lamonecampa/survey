@@ -54,6 +54,39 @@
     <article class="result-kpi"><small>Wilayah asal</small><strong id="kpiRegions">—</strong><span>Kabupaten / kota</span></article>
     <article class="result-kpi"><small>Program studi</small><strong id="kpiPrograms">—</strong><span>Kelompok pilihan prodi</span></article>
   </div>
+  <article class="campus-data-card">
+    <div class="campus-data-heading"><div><span>VISUALISASI DATA FST-UIBU</span><h3>Potret kampus dalam angka</h3><p>Setiap lantai merepresentasikan satu kelompok temuan survei.</p></div><strong><b data-building-total>—</b><small>RESPONDEN</small></strong></div>
+    <div class="campus-building-wrap">
+      <svg class="campus-building" viewBox="0 0 900 510" role="img" aria-label="Ilustrasi gedung kampus UIBU dengan empat lantai data survei">
+        <defs><linearGradient id="campusGlass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff8f5"/><stop offset="1" stop-color="#6bbfc5"/></linearGradient><linearGradient id="campusWall" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#dbe9f1"/></linearGradient></defs>
+        <path d="M70 440 L830 440 L780 475 L120 475 Z" fill="#d7e4eb"/>
+        <path d="M105 155 L450 42 L795 155 Z" fill="#12345b"/><path d="M130 155 L450 62 L770 155 Z" fill="#2a7896"/>
+        <rect x="105" y="155" width="690" height="275" rx="5" fill="url(#campusWall)" stroke="#b8cbd8" stroke-width="4"/>
+        <rect x="105" y="155" width="690" height="17" fill="#28b9b0"/>
+        <g fill="url(#campusGlass)" stroke="#8aaebb" stroke-width="3">
+          <rect x="135" y="190" width="630" height="48"/><rect x="135" y="258" width="630" height="48"/><rect x="135" y="326" width="630" height="48"/>
+        </g>
+        <g stroke="#fff" stroke-width="7"><path d="M240 190v48 M345 190v48 M450 190v48 M555 190v48 M660 190v48 M240 258v48 M345 258v48 M450 258v48 M555 258v48 M660 258v48 M240 326v48 M345 326v48 M555 326v48 M660 326v48"/></g>
+        <rect x="390" y="155" width="120" height="275" fill="#153c5b" opacity=".94"/><rect x="405" y="185" width="90" height="90" rx="4" fill="#eaf6f7"/>
+        <image href="./assets/uibu-logo.png" x="418" y="194" width="64" height="72" preserveAspectRatio="xMidYMid meet"/>
+        <text x="450" y="292" text-anchor="middle" fill="#fff" font-size="13" font-weight="700" letter-spacing="2">FST · UIBU</text>
+        <g font-family="DM Sans, sans-serif" font-size="13" font-weight="700" fill="#12345b" text-anchor="middle">
+          <text x="185" y="220">ASAL SEKOLAH</text><text x="715" y="220">WILAYAH</text>
+          <text x="185" y="288">SUMBER INFORMASI</text><text x="715" y="288">MEDIA SOSIAL</text>
+          <text x="185" y="356">PROGRAM STUDI</text><text x="715" y="356">ALASAN MEMILIH</text>
+        </g>
+        <g font-family="DM Sans, sans-serif" font-size="11" fill="#2478bd" text-anchor="middle">
+          <text id="buildingSchool" x="185" y="237">Menunggu data</text><text id="buildingRegion" x="715" y="237">Menunggu data</text>
+          <text id="buildingSource" x="185" y="305">Menunggu data</text><text x="715" y="305">Platform digital</text>
+          <text id="buildingProgram" x="185" y="373">Menunggu data</text><text x="715" y="373">Minat responden</text>
+        </g>
+        <rect x="105" y="430" width="690" height="13" fill="#f28c28"/><rect x="85" y="443" width="730" height="9" rx="4" fill="#12345b"/>
+        <g fill="#28b9b0"><circle cx="115" cy="130" r="6"/><circle cx="785" cy="130" r="6"/></g>
+        <g fill="none" stroke="#6bbfc5" stroke-width="2" opacity=".6"><path d="M35 110q30-18 60 0t60 0 M745 95q30-18 60 0t60 0"/></g>
+      </svg>
+    </div>
+    <p class="campus-data-caption">Ilustrasi konseptual gedung FST-UIBU. Nilai dan label diperbarui berdasarkan respons yang masuk ke Google Sheets.</p>
+  </article>
   <div class="results-grid">
     <article class="result-chart"><div class="chart-title"><span>01</span><div><h3>Asal sekolah responden</h3><p>SMA, SMK, MA, Pondok Pesantren, dan lainnya</p></div></div><canvas id="chartSchool"></canvas><div class="chart-empty">Menunggu data responden</div></article>
     <article class="result-chart"><div class="chart-title"><span>02</span><div><h3>Program studi yang diminati</h3><p>Distribusi minat Teknik Mesin, Kimia, dan Teknik Elektro</p></div></div><canvas id="chartProgram"></canvas><div class="chart-empty">Menunggu data responden</div></article>
