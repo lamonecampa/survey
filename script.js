@@ -29,7 +29,8 @@ form.addEventListener('submit',async e=>{
     await fetch(SURVEY_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
     form.classList.add('hidden');
     const success=document.getElementById('success');
-    success.querySelector('p').textContent='Permintaan pengiriman telah dikirim. Terima kasih telah berpartisipasi dalam survei FST-UIBU.';
+    success.querySelector('h3').textContent='Terima kasih!';
+    success.querySelector('p').textContent='Browser telah mengirim permintaan jawaban ke server survei. Karena pembatasan keamanan lintas situs, halaman ini tidak dapat membaca tanda terima server. Pengelola perlu memastikan baris baru muncul di Google Sheets.';
     success.classList.remove('hidden');
   }catch(err){
     console.error(err);error.textContent='Pengiriman gagal. Periksa koneksi internet atau hubungi pengelola survei.';
