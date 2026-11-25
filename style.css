@@ -117,3 +117,56 @@ body{background:#f4f8fc;color:#163553}
 @media(max-width:800px){.wind-logo{width:82px;height:82px;top:12px;right:8%}.wind-emblem{inset:9px;border-radius:22px;font-size:43px}.wind-trail{width:60px;left:-42px;top:37px}.wind-trail-two{top:49px;left:-32px;width:45px}.wind-spark{font-size:16px}}
 @media(max-width:460px){.wind-logo{right:4%;top:8px;transform:scale(.85)}}
 @media(prefers-reduced-motion:reduce){.wind-logo,.wind-emblem,.wind-trail,.wind-spark{animation:none!important}}
+
+
+/* ===== Campus photo hero with moving clouds and wind ===== */
+.hero-campus{
+  isolation:isolate;overflow:hidden;border-radius:0 0 22px 22px;
+  background:
+    linear-gradient(90deg,rgba(244,248,252,.94) 0%,rgba(244,248,252,.86) 44%,rgba(244,248,252,.57) 100%),
+    url("./assets/uibu-campus.jpg") center 48%/cover no-repeat;
+  box-shadow:0 18px 48px #12345b12
+}
+.hero-campus:after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,#ffffff16 0%,transparent 40%,#12345b12 100%)
+}
+.hero-campus .hero-copy,.hero-campus .hero-art{z-index:2}
+.sky-motion{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+.sky-cloud{
+  position:absolute;width:142px;height:35px;border-radius:40px;
+  background:linear-gradient(180deg,#fff 0%,#edf7fc 100%);
+  opacity:.62;filter:blur(1.2px);box-shadow:0 8px 20px #ffffff55;
+  animation:cloudSail 34s linear infinite
+}
+.sky-cloud:before,.sky-cloud:after{content:"";position:absolute;bottom:8px;border-radius:50%;background:#fff}
+.sky-cloud:before{width:57px;height:57px;left:22px}
+.sky-cloud:after{width:73px;height:73px;left:59px}
+.cloud-one{top:9%;left:-190px;transform:scale(.82);animation-duration:38s}
+.cloud-two{top:23%;left:-240px;transform:scale(.58);opacity:.48;animation-duration:51s;animation-delay:-17s}
+.cloud-three{top:5%;left:-210px;transform:scale(1.08);opacity:.38;animation-duration:62s;animation-delay:-31s}
+.wind-streak{
+  position:absolute;height:18px;width:210px;border-top:2px solid #fff;
+  border-radius:50%;opacity:0;filter:drop-shadow(0 2px 3px #55b9e866);
+  transform:rotate(-5deg);animation:windAcross 9s ease-in-out infinite
+}
+.wind-streak:after{content:"";position:absolute;top:8px;left:25px;width:65%;border-top:1px solid #55b9e8;border-radius:50%}
+.wind-streak-one{top:35%;left:-240px;animation-delay:-2s}
+.wind-streak-two{top:48%;left:-280px;width:155px;animation-duration:11s;animation-delay:-6s}
+.wind-streak-three{top:17%;left:-260px;width:120px;animation-duration:13s;animation-delay:-9s}
+@keyframes cloudSail{from{translate:0 0}to{translate:calc(100vw + 460px) 13px}}
+@keyframes windAcross{
+  0%{translate:0 0;opacity:0;scale:.7}
+  15%{opacity:.55}
+  75%{opacity:.38}
+  100%{translate:calc(100vw + 400px) -25px;opacity:0;scale:1.15}
+}
+@media(max-width:800px){
+  .hero-campus{border-radius:0 0 16px 16px;background-position:58% center}
+  .hero-campus .hero-copy{padding:20px 16px;border-radius:16px;background:#f4f8f2b8;backdrop-filter:blur(2px)}
+  .sky-cloud{opacity:.4}
+  .wind-streak{opacity:.35}
+}
+@media(prefers-reduced-motion:reduce){
+  .sky-cloud,.wind-streak{animation:none!important}
+}
