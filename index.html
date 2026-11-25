@@ -13,7 +13,7 @@
 <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
 <nav class="nav wrap">
 <a class="brand" href="#"><img class="brand-logo" src="./assets/uibu-logo.png" alt="Logo resmi Universitas Insan Budi Utomo"><span><b>FST-UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a>
-<a class="nav-link" href="#tentang">Tentang survei</a><a class="nav-link" href="#galeri">Galeri kegiatan</a><a class="nav-cta" href="#survey">Isi survei <span>↗</span></a>
+<a class="nav-link" href="#hasil">Hasil survei</a><a class="nav-link" href="#tentang">Tentang survei</a><a class="nav-link" href="#galeri">Galeri kegiatan</a><a class="nav-cta" href="#survey">Isi survei <span>↗</span></a>
 </nav>
 <main>
 <section class="hero wrap hero-campus"><div class="sky-motion" aria-hidden="true"><span class="sky-cloud cloud-one"></span><span class="sky-cloud cloud-two"></span><span class="sky-cloud cloud-three"></span><span class="wind-streak wind-streak-one"></span><span class="wind-streak wind-streak-two"></span><span class="wind-streak wind-streak-three"></span></div>
@@ -40,6 +40,31 @@
   <div class="gallery-head"><div><div class="eyebrow dark"><i></i> KEGIATAN FST UIBU</div><h2>Belajar, berkarya,<br><em>berkolaborasi.</em></h2></div><p>Potret kegiatan Fakultas Sains dan Teknologi. Foto dimuat langsung dari dokumentasi publik UIBU, tanpa menyimpan salinannya di repository microsite.</p></div>
   <div class="gallery-grid" id="fstGallery" aria-live="polite"><article class="gallery-loading"><span class="gallery-loader"></span><b>Memuat dokumentasi kegiatan...</b><small>Terhubung ke sumber resmi UIBU</small></article></div>
   <div class="gallery-source"><span>Dokumentasi: </span><a href="https://uibu.ac.id/?p=14318" target="_blank" rel="noopener noreferrer">Berita resmi UIBU · Honda Service Visit 2026 ↗</a></div>
+</section>
+
+<section class="results-section wrap" id="hasil">
+  <div class="results-heading">
+    <div><div class="eyebrow dark"><i></i> DATA DAN INSIGHT FST UIBU</div><h2>Suara responden,<br><em>terlihat dalam data.</em></h2></div>
+    <p>Ringkasan agregat hasil survei calon mahasiswa. Grafik akan diperbarui dari database terpusat setelah integrasi Google Sheets aktif.</p>
+  </div>
+  <div class="results-status" id="resultsStatus" role="status"><span class="status-dot"></span><span>Dashboard disiapkan · menunggu koneksi Google Sheets</span></div>
+  <div class="results-kpis">
+    <article class="result-kpi"><small>Total responden</small><strong id="kpiTotal">—</strong><span>Seluruh jawaban masuk</span></article>
+    <article class="result-kpi"><small>Asal sekolah</small><strong id="kpiSchools">—</strong><span>Jenis sekolah terwakili</span></article>
+    <article class="result-kpi"><small>Wilayah asal</small><strong id="kpiRegions">—</strong><span>Kabupaten / kota</span></article>
+    <article class="result-kpi"><small>Program studi</small><strong id="kpiPrograms">—</strong><span>Kelompok pilihan prodi</span></article>
+  </div>
+  <div class="results-grid">
+    <article class="result-chart"><div class="chart-title"><span>01</span><div><h3>Asal sekolah responden</h3><p>SMA, SMK, MA, Pondok Pesantren, dan lainnya</p></div></div><canvas id="chartSchool"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>02</span><div><h3>Program studi yang diminati</h3><p>Distribusi minat Teknik Mesin, Kimia, dan Teknik Elektro</p></div></div><canvas id="chartProgram"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>03</span><div><h3>Daerah asal responden</h3><p>Kabupaten / kota dengan jumlah responden terbanyak</p></div></div><canvas id="chartRegion"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>04</span><div><h3>Sumber informasi pertama</h3><p>Dari mana responden pertama kali mengenal UIBU</p></div></div><canvas id="chartSource"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>05</span><div><h3>Platform media sosial</h3><p>Instagram, TikTok, Facebook, YouTube, WhatsApp, X, dan lainnya</p></div></div><canvas id="chartPlatform"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>06</span><div><h3>Jurusan / peminatan asal</h3><p>Latar belakang pendidikan sebelum masuk perguruan tinggi</p></div></div><canvas id="chartMajor"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>07</span><div><h3>Relasi dan rekomendasi</h3><p>Pengaruh keluarga, saudara, teman, dan rekomendasi</p></div></div><canvas id="chartReferral"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+    <article class="result-chart"><div class="chart-title"><span>08</span><div><h3>Alasan memilih program studi</h3><p>Minat pribadi, prospek kerja, beasiswa, biaya, fasilitas, dan lainnya</p></div></div><canvas id="chartReason"></canvas><div class="chart-empty">Menunggu data responden</div></article>
+  </div>
+  <p class="results-privacy">Dashboard hanya menampilkan data agregat. Nama, catatan pribadi, dan identitas responden tidak ditampilkan.</p>
 </section>
 <section class="survey-section" id="survey"><div class="wrap survey-layout">
 <div class="survey-heading"><div class="eyebrow"><i></i> FORMULIR SURVEI</div><h2>Bantu kami<br>mengenal <em>ceritamu.</em></h2><p>Isi beberapa pertanyaan berikut. Jawaban digunakan untuk evaluasi sosialisasi dan promosi pendidikan FST UIBU.</p><div class="privacy-note"><span>◇</span><span><b>Privasi responden</b><small>Hindari memasukkan data sensitif. Nama tidak wajib diisi.</small></span></div></div>
@@ -75,4 +100,5 @@
 <div class="form-error" id="error" role="alert"></div><div class="form-controls"><button type="button" class="btn-back" id="back" disabled>Kembali</button><button type="button" class="btn btn-primary" id="next">Lanjut <span>→</span></button><button type="submit" class="btn btn-primary hidden" id="submit">Kirim jawaban <span>↗</span></button></div></form>
 <div class="success hidden" id="success"><div class="success-icon">✓</div><h3>Terima kasih!</h3><p>Jawaban survei berhasil disimpan pada perangkat ini sebagai demo. Hubungkan Supabase sebelum digunakan untuk pengumpulan data sebenarnya.</p><button class="btn btn-primary" onclick="location.reload()">Kembali ke beranda ↗</button></div></div></div></section>
 <footer class="footer wrap"><a class="brand" href="#"><span class="brand-mark">U</span><span><b>UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a><span>Survei Sumber Informasi Calon Mahasiswa · 2026</span><a href="#survey">Isi survei ↑</a></footer>
-</main><script src="script.js"></script></body></html>
+</main><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="script.js"></script></body></html>
