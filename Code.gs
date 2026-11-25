@@ -224,6 +224,40 @@ function getInstagramFeed_() {
   return result;
 }
 
+/**
+ * Refresh long-lived Instagram User tokens. Run manually or create a weekly
+ * time-driven trigger for this function. Tokens are refreshed only when valid.
+ */
+function refreshInstagramTokens() {
+  const props = PropertiesService.getScriptProperties();
+  const keys = [
+    'INSTAGRAM_MESIN_ACCESS_TOKEN',
+    'INSTAGRAM_ELEKTRO_ACCESS_TOKEN',
+    'INSTAGRAM_KIMIA_ACCESS_TOKEN',
+    'INSTAGRAM_FST_ACCESS_TOKEN'
+  ];
+  const results = [];
+  keys.forEach(key => {
+    const token = props.getProperty(key);
+    if (!token) {
+      results.push({property:key, status:'not configured'});
+      return;
+    }
+    try {
+      const url = 'https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='
+        + encodeURIComponent(token);
+      const refreshed = instagramApiFetch_(url);
+      if (refreshed.access_token) props.setProperty(key, refreshed.access_token);
+      results.push({property:key, status:'refreshed', expiresIn:refreshed.expires_in || null});
+    } catch (error) {
+      results.push({property:key, status:'failed', message:String(error.message || error)});
+    }
+  });
+  CacheService.getScriptCache().remove('fst_instagram_feed_v1');
+  Logger.log(JSON.stringify(results));
+  return results;
+}
+
 function instagramApiFetch_(url) {
   const response = UrlFetchApp.fetch(url, {
     muteHttpExceptions:true,
