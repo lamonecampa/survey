@@ -10,7 +10,32 @@ next.addEventListener('click',()=>{if(validateStep()){current=Math.min(current+1
 back.addEventListener('click',()=>{current=Math.max(current-1,0);render();});
 document.getElementById('source').addEventListener('change',e=>document.getElementById('socialFields').classList.toggle('hidden',e.target.value!=='Media sosial'));
 document.getElementById('relative').addEventListener('change',e=>document.getElementById('relativeFields').classList.toggle('hidden',e.target.value!=='Ya'));
-form.addEventListener('submit',e=>{e.preventDefault();if(!validateStep())return;const data=Object.fromEntries(new FormData(form).entries());data.platform=FormDataArray('platform');data.alasan=FormDataArray('alasan');data.submitted_at=new Date().toISOString();try{const all=JSON.parse(localStorage.getItem('uibu_survey_demo')||'[]');all.push(data);localStorage.setItem('uibu_survey_demo',JSON.stringify(all));}catch(err){console.warn('Penyimpanan demo tidak tersedia',err);}form.classList.add('hidden');document.getElementById('success').classList.remove('hidden');});
+const SURVEY_API_URL = ""; // Isi dengan URL Web App Google Apps Script berakhiran /exec.
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!validateStep())return;
+  if(!SURVEY_API_URL){
+    error.textContent='Pengiriman belum aktif. Admin perlu memasukkan URL Google Apps Script terlebih dahulu.';
+    return;
+  }
+  const button=submit;
+  button.disabled=true;button.textContent='Mengirim...';
+  const data=Object.fromEntries(new FormData(form).entries());
+  data.platform=FormDataArray('platform');data.alasan=FormDataArray('alasan');
+  data.consent=form.querySelector('[name="consent"]').checked;
+  data.submitted_at=new Date().toISOString();
+  try{
+    // text/plain + no-cors avoids a browser preflight. Apps Script receives the JSON body.
+    await fetch(SURVEY_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+    form.classList.add('hidden');
+    const success=document.getElementById('success');
+    success.querySelector('p').textContent='Permintaan pengiriman telah dikirim. Terima kasih telah berpartisipasi dalam survei FST-UIBU.';
+    success.classList.remove('hidden');
+  }catch(err){
+    console.error(err);error.textContent='Pengiriman gagal. Periksa koneksi internet atau hubungi pengelola survei.';
+    button.disabled=false;button.innerHTML='Kirim jawaban <span>↗</span>';
+  }
+});
 function FormDataArray(name){return [...form.querySelectorAll('input[name="'+name+'"]:checked')].map(x=>x.value);}
 render();
 
@@ -117,7 +142,7 @@ render();
 // Expected JSON: { totalResponses: 25, schoolTypes:[{label:"SMK",count:12}], programs:[...],
 // regions:[...], firstSources:[...], platforms:[...], schoolMajors:[...],
 // referrals:[...], reasons:[...] }
-const SURVEY_SUMMARY_URL = "";
+const SURVEY_SUMMARY_URL = ""; // Gunakan URL Web App yang sama dengan SURVEY_API_URL.
 
 (function initSurveyResults(){
   const section=document.getElementById('hasil');
@@ -152,27 +177,40 @@ const SURVEY_SUMMARY_URL = "";
       }
     });
   };
-  fetch(SURVEY_SUMMARY_URL,{headers:{Accept:'application/json'}})
-    .then(response=>{if(!response.ok)throw new Error('HTTP '+response.status);return response.json();})
-    .then(payload=>{
-      const data=payload.summary||payload;
-      const total=Number(data.totalResponses||0);
-      document.getElementById('kpiTotal').textContent=total.toLocaleString('id-ID');
-      document.getElementById('kpiSchools').textContent=list(data.schoolTypes).filter(x=>x.count>0).length;
-      document.getElementById('kpiRegions').textContent=list(data.regions).filter(x=>x.count>0).length;
-      document.getElementById('kpiPrograms').textContent=list(data.programs).filter(x=>x.count>0).length;
-      draw('chartSchool',data.schoolTypes);
-      draw('chartProgram',data.programs,'doughnut');
-      draw('chartRegion',list(data.regions).slice(0,10));
-      draw('chartSource',data.firstSources);
-      draw('chartPlatform',data.platforms,'doughnut');
-      draw('chartMajor',list(data.schoolMajors).slice(0,10));
-      draw('chartReferral',data.referrals);
-      draw('chartReason',data.reasons);
-      setStatus('Data diperbarui · '+total.toLocaleString('id-ID')+' responden',true);
-    })
-    .catch(error=>{
-      console.error('Dashboard survei gagal memuat:',error);
-      setStatus('Data Google Sheets belum dapat dimuat · periksa URL dan izin Web App');
-    });
+  if(!SURVEY_SUMMARY_URL){
+    setStatus('Belum terhubung ke Google Sheets · URL Web App belum dikonfigurasi');
+    return;
+  }
+  const callbackName='uibuSurveySummaryCallback';
+  window[callbackName]=(payload)=>{
+    const data=payload.summary||payload;
+    const total=Number(data.totalResponses||0);
+    document.getElementById('kpiTotal').textContent=total.toLocaleString('id-ID');
+    document.getElementById('kpiSchools').textContent=list(data.schoolTypes).length;
+    document.getElementById('kpiRegions').textContent=list(data.regions).length;
+    document.getElementById('kpiPrograms').textContent=list(data.programs).length;
+    draw('chartSchool',data.schoolTypes);
+    draw('chartProgram',data.programs,'doughnut');
+    draw('chartRegion',list(data.regions).slice(0,10));
+    draw('chartSource',data.firstSources);
+    draw('chartPlatform',data.platforms,'doughnut');
+    draw('chartMajor',list(data.schoolMajors).slice(0,10));
+    draw('chartReferral',data.referrals);
+    draw('chartReason',data.reasons);
+    setStatus('Data diperbarui · '+total.toLocaleString('id-ID')+' responden',true);
+    updateCampusBuilding(data);
+  };
+  const script=document.createElement('script');
+  script.src=SURVEY_SUMMARY_URL+'?callback='+callbackName+'&t='+Date.now();
+  script.onerror=()=>setStatus('Google Sheets belum dapat dibaca · periksa URL deployment dan akses Web App');
+  document.head.appendChild(script);
 })();
+
+
+function updateCampusBuilding(data){
+  const set=(id,items)=>{const node=document.getElementById(id);if(node)node.textContent=items?.[0]?.label||'Belum ada data';};
+  set('buildingSchool',data.schoolTypes);set('buildingSource',data.firstSources);
+  set('buildingProgram',data.programs);set('buildingRegion',data.regions);
+  const total=Number(data.totalResponses||0);
+  document.querySelectorAll('[data-building-total]').forEach(el=>el.textContent=total.toLocaleString('id-ID'));
+}
