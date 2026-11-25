@@ -22,6 +22,18 @@ render();
   const articleSources=[
     {id:14318,category:'Kolaborasi industri',url:'https://uibu.ac.id/?p=14318'},
   ];
+  // Discover additional public UIBU articles mentioning the Faculty of Science and Technology.
+  try{
+    const listing=await fetch('https://uibu.ac.id/wp-json/wp/v2/posts?search=Fakultas%20Sains%20dan%20Teknologi&per_page=8&_embed',{headers:{Accept:'application/json'}});
+    if(listing.ok){
+      const posts=await listing.json();
+      for(const post of posts){
+        if(!articleSources.some(item=>item.id===post.id)){
+          articleSources.push({id:post.id,category:'Kegiatan FST',url:post.link});
+        }
+      }
+    }
+  }catch(error){console.warn('Daftar berita tambahan UIBU tidak dapat dimuat:',error);}
   const slides=[];
   const addSlide=(image,title,description,category,url)=>{
     if(!image||slides.some(s=>s.image===image))return;
