@@ -250,29 +250,28 @@ body{background:#f4f8fc;color:#163553}
 .survey-honeypot{position:absolute!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
 
 
-/* ===== Instagram API feed ===== */
+/* ===== Animated Instagram profile links ===== */
 .instagram-section{padding:95px 0 105px;border-top:1px solid #e4edf3}
-.instagram-heading{display:grid;grid-template-columns:1fr .8fr;gap:70px;align-items:end;margin-bottom:30px}
+.instagram-heading{display:grid;grid-template-columns:1fr .8fr;gap:70px;align-items:end;margin-bottom:34px}
 .instagram-heading h2{font:700 clamp(38px,5vw,55px)/1.04 "Space Grotesk";letter-spacing:-.05em;margin:18px 0 0}
 .instagram-heading h2 em{font-style:normal;background:linear-gradient(100deg,#2478bd,#28b9b0,#f28c28);-webkit-background-clip:text;background-clip:text;color:transparent}
 .instagram-heading>p{font-size:13px;line-height:1.9;color:#718399;margin:0 0 5px}
-.instagram-accounts{display:flex;gap:9px;flex-wrap:wrap;margin:0 0 22px}
-.instagram-account{border:1px solid #dce7ef;border-radius:30px;background:#fff;color:#58718a;padding:10px 15px;font:700 11px "DM Sans",sans-serif;cursor:pointer}
-.instagram-account:hover,.instagram-account.is-active{background:#12345b;border-color:#12345b;color:#fff}
-.instagram-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.instagram-card{min-width:0;background:#fff;border:1px solid #e5edf4;border-radius:15px;overflow:hidden;box-shadow:0 12px 32px #12345b0b;transition:transform .2s,box-shadow .2s}
-.instagram-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px #12345b18}
-.instagram-media{display:block;position:relative;aspect-ratio:1/1;background:linear-gradient(135deg,#e4f2fa,#dff5f0);overflow:hidden}
-.instagram-media img{width:100%;height:100%;display:block;object-fit:cover}
-.instagram-media-type{position:absolute;right:10px;top:10px;border-radius:20px;background:#102e50d9;color:#fff;padding:5px 8px;font-size:9px;font-weight:800}
-.instagram-card-body{padding:13px}
-.instagram-user{font-size:10px;color:#2478bd;font-weight:800}
-.instagram-caption{font-size:11px;line-height:1.6;color:#718399;margin:7px 0 12px;min-height:52px}
-.instagram-card-body>a{font-size:10px;color:#2478bd;font-weight:800}
-.instagram-message{grid-column:1/-1;min-height:180px;border:1px dashed #cbdbe8;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:#49647d;background:#ffffffa8;text-align:center;padding:25px}
-.instagram-message small{font-size:11px;color:#8a9bad}
-.instagram-footer{display:flex;justify-content:space-between;gap:15px;margin-top:20px;font-size:10px;color:#8494a5}
-.instagram-footer a{color:#2478bd;font-weight:800}
-@media(max-width:900px){.instagram-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.instagram-heading{gap:30px}}
-@media(max-width:650px){.instagram-section{padding:70px 0}.instagram-heading{grid-template-columns:1fr;gap:14px}.instagram-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.instagram-footer{flex-direction:column}.instagram-account{font-size:10px;padding:9px 12px}}
-@media(max-width:390px){.instagram-grid{grid-template-columns:1fr}}
+.instagram-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.instagram-link{position:relative;display:flex;align-items:center;gap:15px;min-height:88px;padding:17px 20px;border:1px solid #dce7ef;border-radius:16px;background:#fff;color:#173653;text-decoration:none;overflow:hidden;box-shadow:0 10px 28px #12345b08;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
+.instagram-link:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,#2478bd12,#28b9b012,#f28c2812);opacity:0;transition:opacity .28s ease}
+.instagram-link:hover{transform:translateY(-5px);border-color:#8fc4df;box-shadow:0 18px 35px #12345b18}
+.instagram-link:hover:before{opacity:1}
+.instagram-link:focus-visible{outline:3px solid #55b9e8;outline-offset:3px}
+.instagram-link-icon{position:relative;display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:linear-gradient(140deg,#2478bd,#28b9b0 65%,#f28c28);color:#fff;font:400 34px/1 Arial,sans-serif;box-shadow:0 7px 16px #2478bd35;transition:transform .35s ease}
+.instagram-link:hover .instagram-link-icon{transform:rotate(-10deg) scale(1.08)}
+.instagram-link>span:nth-child(2){position:relative;display:flex;flex-direction:column;gap:5px;min-width:0}
+.instagram-link small{font-size:9px;font-weight:800;letter-spacing:.13em;color:#8a9bad}
+.instagram-link b{font:700 15px "Space Grotesk";color:#173653}
+.instagram-link-arrow{position:relative;margin-left:auto;color:#2478bd;font-size:22px;transition:transform .28s ease}
+.instagram-link:hover .instagram-link-arrow{transform:translate(4px,-4px)}
+.instagram-link-fst{border-color:#b9d9e9;background:linear-gradient(110deg,#fff,#f2f9fc)}
+.instagram-link-fst .instagram-link-icon{animation:instagramPulse 2.8s ease-in-out infinite}
+@keyframes instagramPulse{0%,100%{box-shadow:0 7px 16px #2478bd30,0 0 0 0 #55b9e800}50%{box-shadow:0 7px 16px #2478bd30,0 0 0 8px #55b9e81c}}
+@media(max-width:900px){.instagram-heading{gap:30px}}
+@media(max-width:650px){.instagram-section{padding:70px 0}.instagram-heading{grid-template-columns:1fr;gap:14px}.instagram-links{grid-template-columns:1fr}.instagram-link{min-height:80px}}
+@media(prefers-reduced-motion:reduce){.instagram-link,.instagram-link:before,.instagram-link-icon,.instagram-link-arrow{transition:none;animation:none}}
