@@ -250,28 +250,32 @@ body{background:#f4f8fc;color:#163553}
 .survey-honeypot{position:absolute!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
 
 
-/* ===== Animated Instagram profile links ===== */
+/* ===== Motion-style Instagram CTA buttons ===== */
 .instagram-section{padding:95px 0 105px;border-top:1px solid #e4edf3}
 .instagram-heading{display:grid;grid-template-columns:1fr .8fr;gap:70px;align-items:end;margin-bottom:34px}
 .instagram-heading h2{font:700 clamp(38px,5vw,55px)/1.04 "Space Grotesk";letter-spacing:-.05em;margin:18px 0 0}
 .instagram-heading h2 em{font-style:normal;background:linear-gradient(100deg,#2478bd,#28b9b0,#f28c28);-webkit-background-clip:text;background-clip:text;color:transparent}
 .instagram-heading>p{font-size:13px;line-height:1.9;color:#718399;margin:0 0 5px}
-.instagram-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.instagram-link{position:relative;display:flex;align-items:center;gap:15px;min-height:88px;padding:17px 20px;border:1px solid #dce7ef;border-radius:16px;background:#fff;color:#173653;text-decoration:none;overflow:hidden;box-shadow:0 10px 28px #12345b08;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease}
-.instagram-link:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,#2478bd12,#28b9b012,#f28c2812);opacity:0;transition:opacity .28s ease}
-.instagram-link:hover{transform:translateY(-5px);border-color:#8fc4df;box-shadow:0 18px 35px #12345b18}
-.instagram-link:hover:before{opacity:1}
-.instagram-link:focus-visible{outline:3px solid #55b9e8;outline-offset:3px}
-.instagram-link-icon{position:relative;display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:15px;background:linear-gradient(140deg,#2478bd,#28b9b0 65%,#f28c28);color:#fff;font:400 34px/1 Arial,sans-serif;box-shadow:0 7px 16px #2478bd35;transition:transform .35s ease}
-.instagram-link:hover .instagram-link-icon{transform:rotate(-10deg) scale(1.08)}
-.instagram-link>span:nth-child(2){position:relative;display:flex;flex-direction:column;gap:5px;min-width:0}
-.instagram-link small{font-size:9px;font-weight:800;letter-spacing:.13em;color:#8a9bad}
-.instagram-link b{font:700 15px "Space Grotesk";color:#173653}
-.instagram-link-arrow{position:relative;margin-left:auto;color:#2478bd;font-size:22px;transition:transform .28s ease}
+.instagram-links{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:16px;padding:34px 24px;border:1px solid #dce5f4;border-radius:24px;background:radial-gradient(ellipse at 50% 0%,#7774ff18,transparent 65%),linear-gradient(145deg,#f9faff,#eef2fb);box-shadow:inset 0 1px #fff,0 18px 50px #17275a0a}
+.instagram-link{--motion-accent:#7774ff;position:relative;isolation:isolate;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:0 25px;border:1px solid #9992ff;border-radius:999px;background:linear-gradient(135deg,#7774ff,#6658e8 60%,#5145d5);color:#fff;text-decoration:none;box-shadow:0 9px 22px #6558e84a,0 0 0 0 #7774ff38;overflow:hidden;transform:translateY(0) scale(1);transition:transform .42s cubic-bezier(.2,1.7,.4,1),box-shadow .35s ease,filter .35s ease}
+.instagram-link:before{content:"";position:absolute;z-index:-1;inset:-2px;background:linear-gradient(110deg,transparent 20%,#ffffff55 48%,transparent 72%);transform:translateX(-130%);transition:transform .7s ease}
+.instagram-link:after{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;background:linear-gradient(180deg,#ffffff20,transparent 55%)}
+.instagram-link:hover{transform:translateY(-5px) scale(1.045);box-shadow:0 14px 30px #6558e866,0 0 0 7px #7774ff18;filter:saturate(1.12)}
+.instagram-link:hover:before{transform:translateX(130%)}
+.instagram-link:active{transform:translateY(1px) scale(.96);transition-duration:.12s}
+.instagram-link:focus-visible{outline:3px solid #55b9e8;outline-offset:5px}
+.instagram-link-icon{display:grid;place-items:center;width:25px;height:25px;color:#fff;font:400 27px/1 Arial,sans-serif;transition:transform .45s cubic-bezier(.2,1.7,.4,1)}
+.instagram-link:hover .instagram-link-icon{transform:rotate(-13deg) scale(1.2)}
+.instagram-link>span:nth-child(2){display:flex;flex-direction:column;gap:2px;min-width:0}
+.instagram-link small{font-size:8px;font-weight:800;letter-spacing:.12em;color:#e0deff}
+.instagram-link b{font:700 13px "Space Grotesk";color:#fff;white-space:nowrap}
+.instagram-link-arrow{margin-left:3px;color:#fff;font-size:19px;transition:transform .35s cubic-bezier(.2,1.7,.4,1)}
 .instagram-link:hover .instagram-link-arrow{transform:translate(4px,-4px)}
-.instagram-link-fst{border-color:#b9d9e9;background:linear-gradient(110deg,#fff,#f2f9fc)}
-.instagram-link-fst .instagram-link-icon{animation:instagramPulse 2.8s ease-in-out infinite}
-@keyframes instagramPulse{0%,100%{box-shadow:0 7px 16px #2478bd30,0 0 0 0 #55b9e800}50%{box-shadow:0 7px 16px #2478bd30,0 0 0 8px #55b9e81c}}
+.instagram-link-fst{--motion-accent:#6258ed;animation:motionFloat 3.2s ease-in-out infinite}
+.instagram-link:nth-child(2){animation:motionFloat 3.2s ease-in-out .2s infinite}
+.instagram-link:nth-child(3){animation:motionFloat 3.2s ease-in-out .4s infinite}
+.instagram-link:nth-child(4){animation:motionFloat 3.2s ease-in-out .6s infinite}
+@keyframes motionFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 @media(max-width:900px){.instagram-heading{gap:30px}}
-@media(max-width:650px){.instagram-section{padding:70px 0}.instagram-heading{grid-template-columns:1fr;gap:14px}.instagram-links{grid-template-columns:1fr}.instagram-link{min-height:80px}}
+@media(max-width:650px){.instagram-section{padding:70px 0}.instagram-heading{grid-template-columns:1fr;gap:14px}.instagram-links{padding:24px 14px;gap:12px}.instagram-link{min-height:54px;padding:0 19px}.instagram-link b{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.instagram-link,.instagram-link:before,.instagram-link-icon,.instagram-link-arrow{transition:none;animation:none}}
