@@ -14,28 +14,78 @@ form.addEventListener('submit',e=>{e.preventDefault();if(!validateStep())return;
 function FormDataArray(name){return [...form.querySelectorAll('input[name="'+name+'"]:checked')].map(x=>x.value);}
 render();
 
-// Load public activity photos from the official UIBU WordPress media endpoint.
-// Images remain hosted by UIBU; this microsite stores only the article ID and metadata.
-(async function loadFstGallery(){
+// Automatic slideshow using public images hosted by UIBU. No image files are copied into this repository.
+(async function loadFstGallerySlideshow(){
   const root=document.getElementById('fstGallery');
   if(!root)return;
-  const sources=[{id:14318,category:'Kolaborasi industri',fallbackTitle:'Honda Service Visit UIBU 2026',fallbackText:'FST UIBU bekerja sama dengan AHASS Honda Sinar Indah Motor menghadirkan layanan servis motor dan oli gratis bagi sivitas akademika.',url:'https://uibu.ac.id/?p=14318'}];
-  const esc=value=>String(value||'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  const cards=[];
-  for(const item of sources){
+  root.classList.add('is-slideshow');
+  const articleSources=[
+    {id:14318,category:'Kolaborasi industri',url:'https://uibu.ac.id/?p=14318'},
+  ];
+  const slides=[];
+  const addSlide=(image,title,description,category,url)=>{
+    if(!image||slides.some(s=>s.image===image))return;
+    slides.push({image,title,description,category,url});
+  };
+  for(const item of articleSources){
     try{
       const response=await fetch('https://uibu.ac.id/wp-json/wp/v2/posts/'+item.id+'?_embed',{headers:{Accept:'application/json'}});
-      if(!response.ok)throw new Error('Sumber foto tidak merespons');
+      if(!response.ok)throw new Error('Artikel tidak dapat dimuat');
       const post=await response.json();
-      const media=post?._embedded?.['wp:featuredmedia']?.[0];
-      const image=media?.media_details?.sizes?.large?.source_url||media?.source_url;
-      if(!image)throw new Error('Foto utama belum tersedia melalui API');
-      const title=post.title?.rendered||item.fallbackTitle;
-      const excerpt=(post.excerpt?.rendered||'').replace(/<[^>]*>/g,' ').replace(/\\s+/g,' ').trim()||item.fallbackText;
-      cards.push('<article class="gallery-card"><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer"><img class="gallery-photo" src="'+esc(image)+'" alt="'+esc(title)+'" loading="lazy" referrerpolicy="no-referrer"></a><div class="gallery-card-body"><span class="gallery-tag">'+esc(item.category)+'</span><h3>'+esc(title)+'</h3><p>'+esc(excerpt.slice(0,170))+'</p><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">Lihat dokumentasi ↗</a></div></article>');
-    }catch(error){
-      cards.push('<article class="gallery-card"><div class="gallery-photo gallery-photo-fallback" role="img" aria-label="Dokumentasi kegiatan FST UIBU"><div class="fallback-mark">UIBU</div><span>Dokumentasi resmi</span></div><div class="gallery-card-body"><span class="gallery-tag">'+esc(item.category)+'</span><h3>'+esc(item.fallbackTitle)+'</h3><p>'+esc(item.fallbackText)+'</p><a href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">Buka berita dan foto ↗</a></div></article>');
-    }
+      const title=(post.title?.rendered||'Kegiatan FST UIBU').replace(/<[^>]*>/g,'').trim();
+      const description=(post.excerpt?.rendered||'Dokumentasi kegiatan Fakultas Sains dan Teknologi UIBU.').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+      const featured=post._embedded?.['wp:featuredmedia']?.[0];
+      addSlide(featured?.media_details?.sizes?.large?.source_url||featured?.source_url,title,description,item.category,item.url);
+      const content=post.content?.rendered||'';
+      const matches=[...content.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)];
+      for(const match of matches){
+        const altMatch=match[0].match(/alt=["']([^"']*)["']/i);
+        addSlide(match[1],altMatch?.[1]||title,description,item.category,item.url);
+      }
+    }catch(error){console.warn('Dokumentasi galeri tidak dapat dimuat:',error);}
   }
-  root.innerHTML=cards.join('');
+  if(!slides.length){
+    const fallback=document.createElement('article');
+    fallback.className='gallery-empty';
+    fallback.innerHTML='<b>Dokumentasi kegiatan sedang tidak tersedia.</b><small>Silakan buka berita resmi UIBU untuk melihat foto kegiatan.</small><a href="https://uibu.ac.id/?p=14318" target="_blank" rel="noopener noreferrer">Buka dokumentasi UIBU ↗</a>';
+    root.replaceChildren(fallback);
+    return;
+  }
+  let active=0,timer=null;
+  const cards=slides.map((slide,index)=>{
+    const card=document.createElement('article');
+    card.className='gallery-card'+(index===0?' is-active':'');
+    const link=document.createElement('a');link.href=slide.url;link.target='_blank';link.rel='noopener noreferrer';
+    const img=document.createElement('img');img.className='gallery-photo';img.src=slide.image;img.alt=slide.title;img.loading=index===0?'eager':'lazy';img.referrerPolicy='no-referrer';
+    link.append(img);
+    const body=document.createElement('div');body.className='gallery-card-body';
+    const tag=document.createElement('span');tag.className='gallery-tag';tag.textContent=slide.category;
+    const heading=document.createElement('h3');heading.textContent=slide.title;
+    const desc=document.createElement('p');desc.textContent=slide.description.slice(0,180);
+    const more=document.createElement('a');more.href=slide.url;more.target='_blank';more.rel='noopener noreferrer';more.textContent='Lihat dokumentasi ↗';
+    body.append(tag,heading,desc,more);card.append(link,body);return card;
+  });
+  root.replaceChildren(...cards);
+  const controls=document.createElement('div');controls.className='gallery-controls';
+  const previous=document.createElement('button');previous.className='gallery-arrow';previous.type='button';previous.setAttribute('aria-label','Foto sebelumnya');previous.textContent='‹';
+  const dots=document.createElement('div');dots.className='gallery-dots';
+  const status=document.createElement('span');status.className='gallery-status';status.setAttribute('aria-live','polite');
+  const next=document.createElement('button');next.className='gallery-arrow';next.type='button';next.setAttribute('aria-label','Foto berikutnya');next.textContent='›';
+  const dotButtons=slides.map((_,i)=>{const dot=document.createElement('button');dot.type='button';dot.className='gallery-dot'+(i===0?' is-active':'');dot.setAttribute('aria-label','Tampilkan foto '+(i+1));dot.addEventListener('click',()=>show(i,true));dots.append(dot);return dot;});
+  controls.append(previous,dots,status,next);root.after(controls);
+  function show(index,manual=false){
+    active=(index+slides.length)%slides.length;
+    cards.forEach((card,i)=>card.classList.toggle('is-active',i===active));
+    dotButtons.forEach((dot,i)=>{dot.classList.toggle('is-active',i===active);dot.setAttribute('aria-current',i===active?'true':'false');});
+    status.textContent=(active+1)+' / '+slides.length;
+    if(manual)restart();
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  function start(){stop();if(slides.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(active+1),5000);}
+  function restart(){start();}
+  previous.addEventListener('click',()=>show(active-1,true));
+  next.addEventListener('click',()=>show(active+1,true));
+  root.addEventListener('mouseenter',stop);root.addEventListener('mouseleave',start);
+  root.addEventListener('focusin',stop);root.addEventListener('focusout',start);
+  show(0);start();
 })();
