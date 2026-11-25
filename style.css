@@ -245,3 +245,6 @@ body{background:#f4f8fc;color:#163553}
 .campus-building{display:block;width:100%;height:auto;filter:drop-shadow(0 15px 18px #12345b12)}
 .campus-data-caption{font-size:9px;line-height:1.6;color:#8799a9;text-align:center;margin:0}
 @media(max-width:600px){.campus-data-card{padding:16px 10px}.campus-data-heading h3{font-size:20px}.campus-data-heading p{max-width:230px;font-size:10px}.campus-data-heading>strong{min-width:72px;padding:8px}.campus-data-heading>strong b{font-size:21px}.campus-building{min-width:560px}.campus-building-wrap{overflow-x:auto;padding-bottom:4px}}
+
+/* Anti-bot honeypot field: hidden from people, visible to simple form bots */
+.survey-honeypot{position:absolute!important;left:-10000px!important;top:auto!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important}
