@@ -15,58 +15,66 @@ function FormDataArray(name){return [...form.querySelectorAll('input[name="'+nam
 render();
 
 // Automatic slideshow using public images hosted by UIBU. No image files are copied into this repository.
+// External FST activity gallery. Load the known article first; discovery is optional.
 (async function loadFstGallerySlideshow(){
   const root=document.getElementById('fstGallery');
   if(!root)return;
   root.classList.add('is-slideshow');
-  const articleSources=[
-    {id:14318,category:'Kolaborasi industri',url:'https://uibu.ac.id/?p=14318'},
-  ];
-  // Discover additional public UIBU articles mentioning the Faculty of Science and Technology.
-  try{
-    const listing=await fetch('https://uibu.ac.id/wp-json/wp/v2/posts?search=Fakultas%20Sains%20dan%20Teknologi&per_page=8&_embed',{headers:{Accept:'application/json'}});
-    if(listing.ok){
-      const posts=await listing.json();
-      for(const post of posts){
-        if(!articleSources.some(item=>item.id===post.id)){
-          articleSources.push({id:post.id,category:'Kegiatan FST',url:post.link});
-        }
-      }
-    }
-  }catch(error){console.warn('Daftar berita tambahan UIBU tidak dapat dimuat:',error);}
+
+  const fetchJson=async(url,timeout=7000)=>{
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeout);
+    try{
+      const response=await fetch(url,{headers:{Accept:'application/json'},signal:controller.signal,mode:'cors'});
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      return await response.json();
+    }finally{clearTimeout(timer);}
+  };
+
   const slides=[];
   const addSlide=(image,title,description,category,url)=>{
     if(!image||slides.some(s=>s.image===image))return;
     slides.push({image,title,description,category,url});
   };
-  for(const item of articleSources){
+  const loadPost=async(item)=>{
     try{
-      const response=await fetch('https://uibu.ac.id/wp-json/wp/v2/posts/'+item.id+'?_embed',{headers:{Accept:'application/json'}});
-      if(!response.ok)throw new Error('Artikel tidak dapat dimuat');
-      const post=await response.json();
+      const post=await fetchJson('https://uibu.ac.id/wp-json/wp/v2/posts/'+item.id+'?_embed',7000);
       const title=(post.title?.rendered||'Kegiatan FST UIBU').replace(/<[^>]*>/g,'').trim();
       const description=(post.excerpt?.rendered||'Dokumentasi kegiatan Fakultas Sains dan Teknologi UIBU.').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
       const featured=post._embedded?.['wp:featuredmedia']?.[0];
-      addSlide(featured?.media_details?.sizes?.large?.source_url||featured?.source_url,title,description,item.category,item.url);
+      addSlide(featured?.media_details?.sizes?.large?.source_url||featured?.source_url,title,description,item.category,item.url||post.link);
       const content=post.content?.rendered||'';
-      const matches=[...content.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)];
-      for(const match of matches){
+      for(const match of content.matchAll(/<img[^>]+src=["']([^"']+)["'][^>]*>/gi)){
         const altMatch=match[0].match(/alt=["']([^"']*)["']/i);
-        addSlide(match[1],altMatch?.[1]||title,description,item.category,item.url);
+        addSlide(match[1],altMatch?.[1]||title,description,item.category,item.url||post.link);
       }
-    }catch(error){console.warn('Dokumentasi galeri tidak dapat dimuat:',error);}
+    }catch(error){console.warn('Artikel UIBU gagal dimuat:',item.id,error);}
+  };
+
+  // Do not let a slow listing request block the known article.
+  await loadPost({id:14318,category:'Kolaborasi industri',url:'https://uibu.ac.id/?p=14318'});
+  if(!slides.length){
+    try{
+      const posts=await fetchJson('https://uibu.ac.id/wp-json/wp/v2/posts?search=Fakultas%20Sains%20dan%20Teknologi&per_page=8&_embed',6000);
+      for(const post of posts.slice(0,8)){
+        await loadPost({id:post.id,category:'Kegiatan FST',url:post.link});
+        if(slides.length>=12)break;
+      }
+    }catch(error){console.warn('Pencarian berita FST tidak tersedia:',error);}
   }
+
   if(!slides.length){
     const fallback=document.createElement('article');
     fallback.className='gallery-empty';
-    fallback.innerHTML='<b>Dokumentasi kegiatan sedang tidak tersedia.</b><small>Silakan buka berita resmi UIBU untuk melihat foto kegiatan.</small><a href="https://uibu.ac.id/?p=14318" target="_blank" rel="noopener noreferrer">Buka dokumentasi UIBU ↗</a>';
-    root.replaceChildren(fallback);
-    return;
+    const heading=document.createElement('b');heading.textContent='Foto kegiatan belum dapat dimuat otomatis.';
+    const note=document.createElement('small');note.textContent='Sumber foto UIBU tidak merespons atau membatasi akses lintas situs. Buka dokumentasi resmi melalui tautan berikut.';
+    const link=document.createElement('a');link.href='https://uibu.ac.id/?p=14318';link.target='_blank';link.rel='noopener noreferrer';link.textContent='Buka dokumentasi UIBU ↗';
+    fallback.append(heading,note,link);root.replaceChildren(fallback);return;
   }
+
   let active=0,timer=null;
   const cards=slides.map((slide,index)=>{
-    const card=document.createElement('article');
-    card.className='gallery-card'+(index===0?' is-active':'');
+    const card=document.createElement('article');card.className='gallery-card'+(index===0?' is-active':'');
     const link=document.createElement('a');link.href=slide.url;link.target='_blank';link.rel='noopener noreferrer';
     const img=document.createElement('img');img.className='gallery-photo';img.src=slide.image;img.alt=slide.title;img.loading=index===0?'eager':'lazy';img.referrerPolicy='no-referrer';
     link.append(img);
@@ -75,7 +83,9 @@ render();
     const heading=document.createElement('h3');heading.textContent=slide.title;
     const desc=document.createElement('p');desc.textContent=slide.description.slice(0,180);
     const more=document.createElement('a');more.href=slide.url;more.target='_blank';more.rel='noopener noreferrer';more.textContent='Lihat dokumentasi ↗';
-    body.append(tag,heading,desc,more);card.append(link,body);return card;
+    body.append(tag,heading,desc,more);card.append(link,body);
+    img.addEventListener('error',()=>{card.remove();slides.splice(slides.indexOf(slide),1);if(!slides.length){root.classList.remove('is-slideshow');root.textContent='Foto dokumentasi tidak dapat diakses dari server sumber.';}else{show(Math.min(active,slides.length-1));}});
+    return card;
   });
   root.replaceChildren(...cards);
   const controls=document.createElement('div');controls.className='gallery-controls';
@@ -86,17 +96,16 @@ render();
   const dotButtons=slides.map((_,i)=>{const dot=document.createElement('button');dot.type='button';dot.className='gallery-dot'+(i===0?' is-active':'');dot.setAttribute('aria-label','Tampilkan foto '+(i+1));dot.addEventListener('click',()=>show(i,true));dots.append(dot);return dot;});
   controls.append(previous,dots,status,next);root.after(controls);
   function show(index,manual=false){
+    if(!slides.length)return;
     active=(index+slides.length)%slides.length;
     cards.forEach((card,i)=>card.classList.toggle('is-active',i===active));
     dotButtons.forEach((dot,i)=>{dot.classList.toggle('is-active',i===active);dot.setAttribute('aria-current',i===active?'true':'false');});
     status.textContent=(active+1)+' / '+slides.length;
-    if(manual)restart();
+    if(manual)start();
   }
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function start(){stop();if(slides.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(active+1),5000);}
-  function restart(){start();}
-  previous.addEventListener('click',()=>show(active-1,true));
-  next.addEventListener('click',()=>show(active+1,true));
+  previous.addEventListener('click',()=>show(active-1,true));next.addEventListener('click',()=>show(active+1,true));
   root.addEventListener('mouseenter',stop);root.addEventListener('mouseleave',start);
   root.addEventListener('focusin',stop);root.addEventListener('focusout',start);
   show(0);start();
