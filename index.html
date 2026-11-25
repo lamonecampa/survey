@@ -50,7 +50,8 @@
 <div class="two-col"><label>Kabupaten / Kota asal <input name="kota" required placeholder="Contoh: Kabupaten Malang"></label><label>Provinsi <input name="provinsi" required placeholder="Contoh: Jawa Timur"></label></div>
 <label>Asal sekolah <select name="jenis_sekolah" required><option value="">Pilih jenis sekolah</option><option>SMA</option><option>SMK</option><option>MA</option><option>Pondok Pesantren</option><option>Paket C</option><option>Lainnya</option></select></label>
 <label>Nama sekolah / pesantren <input name="nama_sekolah" required placeholder="Tuliskan nama sekolahmu"></label>
-<label>Jurusan / peminatan <input name="jurusan" placeholder="Contoh: Teknik Komputer dan Jaringan"></label></div>
+<label>Jurusan / peminatan saat sekolah <small>(jika ada)</small><input name="jurusan_sekolah" placeholder="Contoh: IPA, IPS, TKJ, Teknik Kendaraan Ringan, Keagamaan"></label>
+<label>Program studi FST yang diminati <select name="prodi" required><option value="">Pilih program studi FST</option><option>Teknik Mesin</option><option>Kimia</option><option>Teknik Elektro</option><option>Belum menentukan</option></select></label></div>
 <div class="form-step" data-step="1"><h3>Bagaimana kamu mengenal UIBU?</h3><p class="muted">Pilih sumber pertama kali kamu mengetahui UIBU.</p>
 <label>Sumber informasi pertama <select name="sumber_pertama" id="source" required><option value="">Pilih sumber informasi</option><option>Keluarga / saudara</option><option>Teman</option><option>Guru / pihak sekolah</option><option>Media sosial</option><option>Website / Google</option><option>Sosialisasi / kunjungan kampus</option><option>Brosur / banner / spanduk</option><option>Lainnya</option></select></label>
 <div id="socialFields" class="conditional hidden"><label>Platform media sosial yang digunakan <small>(boleh pilih lebih dari satu)</small></label><div class="choice-grid">
@@ -64,7 +65,6 @@
 <label>Apakah kamu memilih / mempertimbangkan UIBU atas rekomendasi keluarga, saudara, atau teman? <select name="rekomendasi"><option value="">Pilih jawaban</option><option>Ya</option><option>Tidak</option><option>Sebagian</option></select></label>
 <label>Seberapa besar pengaruh rekomendasi tersebut? <select name="pengaruh_rekomendasi"><option value="">Pilih jawaban</option><option>1 — Tidak berpengaruh</option><option>2 — Sedikit</option><option>3 — Cukup</option><option>4 — Besar</option><option>5 — Sangat besar</option><option>Tidak relevan</option></select></label></div>
 <div class="form-step" data-step="3"><h3>Apa yang menarik minatmu?</h3><p class="muted">Pilih program studi dan alasan yang paling sesuai.</p>
-<label>Program studi yang diminati <select name="prodi" required><option value="">Pilih program studi</option><option>Teknik Mesin</option><option>Kimia</option><option>Teknik Elektro</option><option>Belum menentukan</option></select></label>
 <label>Alasan tertarik <small>(boleh lebih dari satu)</small></label><div class="choice-grid">
 <label class="check"><input type="checkbox" name="alasan" value="Minat pribadi"><span>Minat pribadi</span></label><label class="check"><input type="checkbox" name="alasan" value="Prospek pekerjaan"><span>Prospek kerja</span></label>
 <label class="check"><input type="checkbox" name="alasan" value="Rekomendasi keluarga"><span>Rekomendasi keluarga</span></label><label class="check"><input type="checkbox" name="alasan" value="Rekomendasi guru"><span>Rekomendasi guru</span></label>
