@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071b35">
+<title>Kenali UIBU | Survei Calon Mahasiswa FST</title>
+<meta name="description" content="Survei asal sekolah dan sumber informasi calon mahasiswa Fakultas Sains dan Teknologi UIBU.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+<nav class="nav wrap">
+<a class="brand" href="#"><span class="brand-mark">U</span><span><b>UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a>
+<a class="nav-link" href="#tentang">Tentang survei</a><a class="nav-cta" href="#survey">Isi survei <span>↗</span></a>
+</nav>
+<main>
+<section class="hero wrap">
+<div class="hero-copy"><div class="eyebrow"><i></i> SUARA KAMU, ARAH KAMPUS KAMI</div>
+<h1>Dari mana kamu<br>mengenal <em>UIBU?</em></h1>
+<p class="hero-desc">Ceritakan asal sekolah, sumber informasi, dan program studi yang menarik perhatianmu. Jawabanmu membantu FST UIBU menyusun informasi pendidikan yang lebih tepat sasaran.</p>
+<div class="hero-actions"><a class="btn btn-primary" href="#survey">Mulai isi survei <span>→</span></a><div class="duration"><span class="duration-icon">◷</span><span><b>3–5 menit</b><small>Waktu pengisian</small></span></div></div>
+<div class="hero-proof"><div class="avatars"><span>✦</span><span>⚙</span><span>⌁</span></div><span>Untuk calon mahasiswa dan siswa kelas akhir</span></div></div>
+<div class="hero-art"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="orbit orbit-c"></div>
+<div class="art-core"><div class="core-glow"></div><div class="core-symbol">U</div><span class="core-caption">INSAN BUDI UTOMO</span></div>
+<div class="float-card card-engine"><span class="float-icon">⚙</span><span><b>Teknik Mesin</b><small>Rancang • Ciptakan</small></span></div>
+<div class="float-card card-chem"><span class="float-icon">⚗</span><span><b>Kimia</b><small>Teliti • Temukan</small></span></div>
+<div class="float-card card-electro"><span class="float-icon">⌁</span><span><b>Teknik Elektro</b><small>Hubungkan • Inovasi</small></span></div>
+<div class="spark spark-one">✳</div><div class="spark spark-two">✦</div><div class="spark spark-three">+</div></div>
+<div class="scroll-note"><span></span> GULIR UNTUK MENJELAJAH</div></section>
+<section class="ticker"><div class="ticker-track"><span>TEKNIK MESIN</span><b>✳</b><span>KIMIA</span><b>✳</b><span>TEKNIK ELEKTRO</span><b>✳</b><span>MASA DEPAN DIMULAI DARI RASA INGIN TAHU</span><b>✳</b><span>TEKNIK MESIN</span><b>✳</b><span>KIMIA</span><b>✳</b><span>TEKNIK ELEKTRO</span></div></section>
+<section class="intro wrap" id="tentang"><div><div class="eyebrow dark"><i></i> KENAPA SURVEI INI PENTING?</div><h2>Setiap perjalanan punya<br><em>awal cerita.</em></h2></div><p>Kami ingin memahami bagaimana informasi tentang UIBU sampai kepadamu. Apakah dari guru, keluarga, teman, media sosial, atau sumber lainnya? Tidak ada jawaban benar atau salah. Isi sesuai pengalamanmu.</p></section>
+<section class="steps wrap">
+<article class="step-card"><span class="step-no">01 / ASAL</span><div class="step-visual visual-map">⌖</div><h3>Ceritakan asalmu</h3><p>Daerah asal, sekolah, dan latar pendidikanmu.</p></article>
+<article class="step-card"><span class="step-no">02 / SUMBER</span><div class="step-visual visual-signal">◉</div><h3>Bagikan sumber informasi</h3><p>Platform digital, rekomendasi orang terdekat, atau sosialisasi sekolah.</p></article>
+<article class="step-card"><span class="step-no">03 / MINAT</span><div class="step-visual visual-bulb">✳</div><h3>Pilih bidang yang menarik</h3><p>Teknik Mesin, Kimia, atau Teknik Elektro.</p></article></section>
+<section class="survey-section" id="survey"><div class="wrap survey-layout">
+<div class="survey-heading"><div class="eyebrow"><i></i> FORMULIR SURVEI</div><h2>Bantu kami<br>mengenal <em>ceritamu.</em></h2><p>Isi beberapa pertanyaan berikut. Jawaban digunakan untuk evaluasi sosialisasi dan promosi pendidikan FST UIBU.</p><div class="privacy-note"><span>◇</span><span><b>Privasi responden</b><small>Hindari memasukkan data sensitif. Nama tidak wajib diisi.</small></span></div></div>
+<div class="form-shell"><div class="form-top"><div><span class="form-kicker">SURVEI FST UIBU</span><b id="stepLabel">01 — Asal responden</b></div><span class="counter" id="counter">1 / 4</span></div><div class="progress"><span id="progress"></span></div>
+<form id="surveyForm">
+<div class="form-step active" data-step="0"><h3>Mulai dari asalmu.</h3><p class="muted">Kami ingin tahu latar belakang pendidikanmu.</p>
+<label>Nama <small>(opsional)</small><input name="nama" placeholder="Nama panggilan atau nama lengkap"></label>
+<div class="two-col"><label>Kabupaten / Kota asal <input name="kota" required placeholder="Contoh: Kabupaten Malang"></label><label>Provinsi <input name="provinsi" required placeholder="Contoh: Jawa Timur"></label></div>
+<label>Asal sekolah <select name="jenis_sekolah" required><option value="">Pilih jenis sekolah</option><option>SMA</option><option>SMK</option><option>MA</option><option>Pondok Pesantren</option><option>Paket C</option><option>Lainnya</option></select></label>
+<label>Nama sekolah / pesantren <input name="nama_sekolah" required placeholder="Tuliskan nama sekolahmu"></label>
+<label>Jurusan / peminatan <input name="jurusan" placeholder="Contoh: Teknik Komputer dan Jaringan"></label></div>
+<div class="form-step" data-step="1"><h3>Bagaimana kamu mengenal UIBU?</h3><p class="muted">Pilih sumber pertama kali kamu mengetahui UIBU.</p>
+<label>Sumber informasi pertama <select name="sumber_pertama" id="source" required><option value="">Pilih sumber informasi</option><option>Keluarga / saudara</option><option>Teman</option><option>Guru / pihak sekolah</option><option>Media sosial</option><option>Website / Google</option><option>Sosialisasi / kunjungan kampus</option><option>Brosur / banner / spanduk</option><option>Lainnya</option></select></label>
+<div id="socialFields" class="conditional hidden"><label>Platform media sosial yang digunakan <small>(boleh pilih lebih dari satu)</small></label><div class="choice-grid">
+<label class="check"><input type="checkbox" name="platform" value="Instagram"><span>◎ Instagram</span></label><label class="check"><input type="checkbox" name="platform" value="TikTok"><span>♪ TikTok</span></label>
+<label class="check"><input type="checkbox" name="platform" value="Facebook"><span>f Facebook</span></label><label class="check"><input type="checkbox" name="platform" value="YouTube"><span>▶ YouTube</span></label>
+<label class="check"><input type="checkbox" name="platform" value="WhatsApp"><span>◉ WhatsApp</span></label><label class="check"><input type="checkbox" name="platform" value="X"><span>𝕏 X</span></label><label class="check"><input type="checkbox" name="platform" value="Lainnya"><span>＋ Lainnya</span></label></div></div>
+<label>Apakah kamu pernah melihat informasi khusus FST UIBU? <select name="lihat_fst"><option value="">Pilih jawaban</option><option>Ya</option><option>Tidak</option><option>Tidak yakin</option></select></label></div>
+<div class="form-step" data-step="2"><h3>Siapa yang ikut mengenalkan?</h3><p class="muted">Jawaban ini membantu kami memahami peran rekomendasi orang terdekat.</p>
+<label>Apakah kamu memiliki keluarga, saudara, atau teman yang sedang/pernah kuliah di UIBU? <select name="relasi_uibu" id="relative"><option value="">Pilih jawaban</option><option>Ya</option><option>Tidak</option><option>Tidak tahu</option></select></label>
+<div id="relativeFields" class="conditional hidden"><label>Hubungan dengan orang tersebut <select name="jenis_relasi"><option value="">Pilih hubungan</option><option>Ayah / Ibu</option><option>Kakak / Adik</option><option>Paman / Bibi</option><option>Sepupu</option><option>Saudara lainnya</option><option>Teman</option></select></label></div>
+<label>Apakah kamu memilih / mempertimbangkan UIBU atas rekomendasi keluarga, saudara, atau teman? <select name="rekomendasi"><option value="">Pilih jawaban</option><option>Ya</option><option>Tidak</option><option>Sebagian</option></select></label>
+<label>Seberapa besar pengaruh rekomendasi tersebut? <select name="pengaruh_rekomendasi"><option value="">Pilih jawaban</option><option>1 — Tidak berpengaruh</option><option>2 — Sedikit</option><option>3 — Cukup</option><option>4 — Besar</option><option>5 — Sangat besar</option><option>Tidak relevan</option></select></label></div>
+<div class="form-step" data-step="3"><h3>Apa yang menarik minatmu?</h3><p class="muted">Pilih program studi dan alasan yang paling sesuai.</p>
+<label>Program studi yang diminati <select name="prodi" required><option value="">Pilih program studi</option><option>Teknik Mesin</option><option>Kimia</option><option>Teknik Elektro</option><option>Belum menentukan</option></select></label>
+<label>Alasan tertarik <small>(boleh lebih dari satu)</small></label><div class="choice-grid">
+<label class="check"><input type="checkbox" name="alasan" value="Minat pribadi"><span>Minat pribadi</span></label><label class="check"><input type="checkbox" name="alasan" value="Prospek pekerjaan"><span>Prospek kerja</span></label>
+<label class="check"><input type="checkbox" name="alasan" value="Rekomendasi keluarga"><span>Rekomendasi keluarga</span></label><label class="check"><input type="checkbox" name="alasan" value="Rekomendasi guru"><span>Rekomendasi guru</span></label>
+<label class="check"><input type="checkbox" name="alasan" value="Beasiswa"><span>Beasiswa</span></label><label class="check"><input type="checkbox" name="alasan" value="Biaya pendidikan"><span>Biaya pendidikan</span></label>
+<label class="check"><input type="checkbox" name="alasan" value="Lokasi kampus"><span>Lokasi kampus</span></label><label class="check"><input type="checkbox" name="alasan" value="Fasilitas"><span>Fasilitas</span></label></div>
+<label>Catatan / saran <small>(opsional)</small><textarea name="catatan" rows="3" placeholder="Ada informasi yang ingin kamu sampaikan?"></textarea></label>
+<label class="consent"><input type="checkbox" name="consent" required><span>Saya menyetujui jawaban ini digunakan untuk evaluasi dan pengembangan sosialisasi pendidikan UIBU.</span></label></div>
+<div class="form-error" id="error" role="alert"></div><div class="form-controls"><button type="button" class="btn-back" id="back" disabled>Kembali</button><button type="button" class="btn btn-primary" id="next">Lanjut <span>→</span></button><button type="submit" class="btn btn-primary hidden" id="submit">Kirim jawaban <span>↗</span></button></div></form>
+<div class="success hidden" id="success"><div class="success-icon">✓</div><h3>Terima kasih!</h3><p>Jawaban survei berhasil disimpan pada perangkat ini sebagai demo. Hubungkan Supabase sebelum digunakan untuk pengumpulan data sebenarnya.</p><button class="btn btn-primary" onclick="location.reload()">Kembali ke beranda ↗</button></div></div></div></section>
+<footer class="footer wrap"><a class="brand" href="#"><span class="brand-mark">U</span><span><b>UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a><span>Survei Sumber Informasi Calon Mahasiswa · 2026</span><a href="#survey">Isi survei ↑</a></footer>
+</main><script src="script.js"></script></body></html>
