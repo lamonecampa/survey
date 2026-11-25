@@ -142,7 +142,7 @@ render();
 // Expected JSON: { totalResponses: 25, schoolTypes:[{label:"SMK",count:12}], programs:[...],
 // regions:[...], firstSources:[...], platforms:[...], schoolMajors:[...],
 // referrals:[...], reasons:[...] }
-const SURVEY_SUMMARY_URL = ""; // Gunakan URL Web App yang sama dengan SURVEY_API_URL.
+const SURVEY_SUMMARY_URL = SURVEY_API_URL; // Dashboard memakai endpoint yang sama dengan formulir.
 
 (function initSurveyResults(){
   const section=document.getElementById('hasil');
