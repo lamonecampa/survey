@@ -279,3 +279,24 @@ body{background:#f4f8fc;color:#163553}
 @media(max-width:900px){.instagram-heading{gap:30px}}
 @media(max-width:650px){.instagram-section{padding:70px 0}.instagram-heading{grid-template-columns:1fr;gap:14px}.instagram-links{padding:24px 14px;gap:12px}.instagram-link{min-height:54px;padding:0 19px}.instagram-link b{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.instagram-link,.instagram-link:before,.instagram-link-icon,.instagram-link-arrow{transition:none;animation:none}}
+
+
+/* ===== Global Motion HTML interactions: navigation, links and buttons ===== */
+:root{--motion-ease:cubic-bezier(.2,1.65,.35,1)}
+.nav-link{position:relative;display:inline-flex;align-items:center;padding:10px 2px;transition:color .25s ease,transform .3s var(--motion-ease)}
+.nav-link:after{content:"";position:absolute;left:0;right:0;bottom:3px;height:2px;border-radius:5px;background:linear-gradient(90deg,#2478bd,#28b9b0,#f28c28);transform:scaleX(0);transform-origin:left;transition:transform .32s var(--motion-ease)}
+.nav-link:hover{color:#2478bd;transform:translateY(-2px)}
+.nav-link:hover:after,.nav-link:focus-visible:after{transform:scaleX(1)}
+.nav-cta,.btn,.btn-back{position:relative;isolation:isolate;overflow:hidden;transition:transform .35s var(--motion-ease),box-shadow .3s ease,background-color .25s ease,color .25s ease,border-color .25s ease}
+.nav-cta:before,.btn:before{content:"";position:absolute;z-index:-1;inset:-2px;background:linear-gradient(110deg,transparent 25%,#ffffff48 50%,transparent 75%);transform:translateX(-130%);transition:transform .65s ease}
+.nav-cta:hover,.btn:not(:disabled):hover{transform:translateY(-4px) scale(1.025);box-shadow:0 14px 28px #174c8540}
+.nav-cta:hover:before,.btn:not(:disabled):hover:before{transform:translateX(130%)}
+.nav-cta:active,.btn:not(:disabled):active{transform:translateY(1px) scale(.96);transition-duration:.1s}
+.btn:not(:disabled):focus-visible,.nav-cta:focus-visible,.nav-link:focus-visible,.btn-back:focus-visible{outline:3px solid #55b9e8;outline-offset:4px}
+.btn-primary span{display:inline-block;transition:transform .3s var(--motion-ease)}
+.btn-primary:hover span{transform:translateX(5px)}
+.btn-back{padding:10px 12px;border-radius:8px}
+.btn-back:not(:disabled):hover{background:#eaf3fa;color:#1766a7;transform:translateX(-4px)}
+.btn-back:active{transform:scale(.96)}
+button:disabled,.btn:disabled{cursor:not-allowed}
+@media(prefers-reduced-motion:reduce){.nav-link,.nav-link:after,.nav-cta,.btn,.btn-back,.nav-cta:before,.btn:before,.btn-primary span{transition:none!important;animation:none!important;transform:none!important}}
