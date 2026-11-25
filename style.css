@@ -200,3 +200,32 @@ body{background:#f4f8fc;color:#163553}
 .brand-logo{width:46px;height:50px;flex:0 0 46px;object-fit:contain;display:block}
 .brand-mark{display:none}
 @media(max-width:520px){.brand-logo{width:39px;height:43px;flex-basis:39px}}
+
+
+/* ===== Public aggregated survey results dashboard ===== */
+.results-section{padding:100px 0 95px;scroll-margin-top:25px}
+.results-heading{display:grid;grid-template-columns:1fr .78fr;gap:60px;align-items:end;margin-bottom:28px}
+.results-heading h2{font:700 clamp(38px,5vw,54px)/1.04 "Space Grotesk";letter-spacing:-.05em;margin:18px 0 0;color:#173653}
+.results-heading h2 em{font-style:normal;background:linear-gradient(100deg,#2478bd,#28b9b0,#f28c28);-webkit-background-clip:text;background-clip:text;color:transparent}
+.results-heading>p{font-size:13px;line-height:1.9;color:#718399;margin:0 0 5px}
+.results-status{display:flex;align-items:center;gap:10px;padding:13px 16px;border:1px solid #dce9f2;background:#f7fbfe;border-radius:10px;color:#637d94;font-size:11px;margin-bottom:20px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#f28c28;box-shadow:0 0 0 4px #f28c281c}
+.results-status.is-live .status-dot{background:#20a77a;box-shadow:0 0 0 4px #20a77a1c}
+.results-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.result-kpi{padding:20px;border:1px solid #e4edf4;border-radius:13px;background:#fff;box-shadow:0 8px 24px #12345b08}
+.result-kpi small,.result-kpi span{display:block;color:#8092a4;font-size:10px}
+.result-kpi strong{display:block;color:#173653;font:700 32px "Space Grotesk";margin:7px 0 4px}
+.results-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.result-chart{position:relative;min-width:0;min-height:320px;padding:20px;border:1px solid #e4edf4;border-radius:14px;background:#fff;box-shadow:0 8px 24px #12345b08}
+.chart-title{display:flex;gap:12px;align-items:flex-start;margin-bottom:18px}
+.chart-title>span{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:9px;background:#eaf4fb;color:#2478bd;font-size:10px;font-weight:800}
+.chart-title h3{margin:1px 0 5px;color:#173653;font:600 15px "Space Grotesk"}
+.chart-title p{margin:0;color:#8a9bad;font-size:10px;line-height:1.5}
+.result-chart canvas{display:none;width:100%;max-height:225px}
+.result-chart.has-data canvas{display:block}
+.result-chart.has-data .chart-empty{display:none}
+.chart-empty{min-height:190px;display:grid;place-items:center;text-align:center;color:#91a2b2;font-size:11px;background:linear-gradient(135deg,#f8fbfd,#fff);border:1px dashed #dbe7ef;border-radius:9px}
+.results-privacy{margin:20px 0 0;color:#8798a8;font-size:10px;line-height:1.7}
+.nav-link[href="#hasil"]{color:#2478bd;font-weight:800}
+@media(max-width:800px){.results-section{padding:75px 0}.results-heading{grid-template-columns:1fr;gap:14px}.results-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.results-grid{grid-template-columns:1fr}}
+@media(max-width:460px){.results-section{padding:60px 0}.result-chart{padding:15px;min-height:290px}.results-kpis{gap:9px}.result-kpi{padding:15px}.result-kpi strong{font-size:27px}}
