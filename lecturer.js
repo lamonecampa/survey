@@ -47,6 +47,7 @@ const SURVEY_API_URL = "https://script.google.com/macros/s/AKfycbzx_6Jn7SNXxvEe4
   if (!root) return;
   const status = document.getElementById('lecturerResultsStatus');
   const api = SURVEY_API_URL;
+  let callbackReceived = false;
   const set = (id, value) => {
     const el = document.getElementById(id);
     if (el) el.textContent = Number(value || 0).toLocaleString('id-ID');
@@ -73,16 +74,21 @@ const SURVEY_API_URL = "https://script.google.com/macros/s/AKfycbzx_6Jn7SNXxvEe4
     }));
   }
   window.fstLecturerSummary = payload => {
-    const data = payload.summary || payload;
-    const total = Number(data.lecturer?.totalResponses || 0);
-    const lecturer = data.lecturer || {};
+    callbackReceived = true;
+    if (!payload || payload.ok === false || !payload.lecturer) {
+      status.textContent = 'Apps Script merespons, tetapi ringkasan survei dosen tidak ditemukan. Perbarui deployment dengan Code.gs terbaru.';
+      console.error('Invalid lecturer summary payload:', payload);
+      return;
+    }
+    const lecturer = payload.lecturer;
+    const total = Number(lecturer.totalResponses || 0);
     set('lecturerKpiTotal', total);
     set('lecturerKpiInvolved', count(lecturer.involvement, x => /^ya$/i.test(x)));
     set('lecturerKpiWilling', count(lecturer.willingness, x => /^(sangat bersedia|bersedia)$/i.test(x)));
     set('lecturerKpiPrograms', (lecturer.programs || []).length);
     status.textContent = total
       ? 'Data survei dosen berhasil dimuat · ' + total.toLocaleString('id-ID') + ' responden'
-      : 'Belum ada respons pada tab Survei Dosen PMB. Data akan tampil setelah dosen mengisi survei.';
+      : 'Ringkasan berhasil dimuat, tetapi tab Survei Dosen PMB belum memiliki respons. Pastikan jawaban sudah tercatat di Google Sheets.';
     draw('lecturerChartInvolvement', lecturer.involvement);
     draw('lecturerChartFrequency', lecturer.frequency);
     draw('lecturerChartActivities', lecturer.activities);
@@ -94,6 +100,13 @@ const SURVEY_API_URL = "https://script.google.com/macros/s/AKfycbzx_6Jn7SNXxvEe4
   };
   const script = document.createElement('script');
   script.src = api + '?callback=fstLecturerSummary&t=' + Date.now();
-  script.onerror = () => { status.textContent = 'Data belum dapat dimuat. Periksa akses dan deployment Google Apps Script.'; };
+  script.onerror = () => {
+    status.textContent = 'Gagal mengakses Apps Script. Periksa URL deployment dan setelan akses Web App: Anyone.';
+  };
+  script.onload = () => {
+    window.setTimeout(() => {
+      if (!callbackReceived) status.textContent = 'Apps Script terbuka, tetapi callback ringkasan tidak dijalankan. Kemungkinan deployment masih memakai versi Code.gs lama. Deploy ulang sebagai versi baru.';
+    }, 700);
+  };
   document.head.appendChild(script);
 })();
