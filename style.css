@@ -300,3 +300,19 @@ body{background:#f4f8fc;color:#163553}
 .btn-back:active{transform:scale(.96)}
 button:disabled,.btn:disabled{cursor:not-allowed}
 @media(prefers-reduced-motion:reduce){.nav-link,.nav-link:after,.nav-cta,.btn,.btn-back,.nav-cta:before,.btn:before,.btn-primary span{transition:none!important;animation:none!important;transform:none!important}}
+
+
+/* Lecturer PMB survey form */
+.faculty-survey-section{background:linear-gradient(145deg,#102f50,#17496b)}
+.faculty-survey-section .survey-heading h2{color:#fff}
+.faculty-survey-section .survey-heading>p{color:#c7d9e8}
+.faculty-survey-section .privacy-note{border-color:#ffffff24}
+.faculty-survey-section .privacy-note b{color:#fff}
+.faculty-survey-section .privacy-note small{color:#c7d9e8}
+.faculty-form-shell{box-shadow:0 25px 70px #071b2c55}
+.faculty-progress span{width:100%;background:linear-gradient(90deg,#2478bd,#28b9b0,#f28c28)}
+.faculty-fieldset{border:0;padding:0;margin:18px 0 22px;min-width:0}
+.faculty-fieldset legend{font-size:13px;font-weight:700;color:#173653;margin-bottom:12px}
+.faculty-fieldset legend small{font-size:11px;font-weight:400;color:#8192a4}
+.faculty-survey-section .form-controls{justify-content:flex-end}
+@media(max-width:760px){.faculty-survey-section .survey-layout{padding-top:50px;padding-bottom:50px}}
