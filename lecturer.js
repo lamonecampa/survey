@@ -39,3 +39,61 @@ const SURVEY_API_URL = "https://script.google.com/macros/s/AKfycbzx_6Jn7SNXxvEe4
     }
   });
 })();
+
+
+// Dashboard hasil survei dosen: membaca agregat JSONP dari Apps Script.
+(() => {
+  const root = document.getElementById('hasil-dosen');
+  if (!root) return;
+  const status = document.getElementById('lecturerResultsStatus');
+  const api = SURVEY_API_URL;
+  const set = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = Number(value || 0).toLocaleString('id-ID');
+  };
+  const count = (items, matcher) => (items || []).filter(x => matcher(String(x.label || ''))).reduce((n, x) => n + Number(x.count || 0), 0);
+  const charts = [];
+  function draw(id, items, type = 'bar') {
+    const canvas = document.getElementById(id);
+    const card = canvas?.closest('.result-chart');
+    const rows = Array.isArray(items) ? items.filter(x => Number(x.count) > 0) : [];
+    if (!canvas || !card || !rows.length || !window.Chart) return;
+    card.classList.add('has-data');
+    charts.push(new Chart(canvas, {
+      type: type === 'doughnut' ? 'doughnut' : 'bar',
+      data: {
+        labels: rows.map(x => x.label),
+        datasets: [{ data: rows.map(x => Number(x.count)), backgroundColor: ['#2478bd','#28b9b0','#f28c28','#12345b','#55b9e8','#79a8cf','#80cfc5','#dca45d'], borderWidth: 0, borderRadius: 6, maxBarThickness: 28 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: type === 'bar' ? 'y' : 'x',
+        plugins: { legend: { display: type === 'doughnut', position: 'bottom', labels: { boxWidth: 10, usePointStyle: true } }, tooltip: { callbacks: { label: ctx => ctx.label + ': ' + (ctx.parsed.x ?? ctx.parsed) + ' dosen' } } },
+        scales: type === 'doughnut' ? {} : { x: { beginAtZero: true, ticks: { precision: 0 } }, y: { grid: { display: false } } }
+      }
+    }));
+  }
+  window.fstLecturerSummary = payload => {
+    const data = payload.summary || payload;
+    const total = Number(data.lecturer?.totalResponses || 0);
+    const lecturer = data.lecturer || {};
+    set('lecturerKpiTotal', total);
+    set('lecturerKpiInvolved', count(lecturer.involvement, x => /^ya$/i.test(x)));
+    set('lecturerKpiWilling', count(lecturer.willingness, x => /^(sangat bersedia|bersedia)$/i.test(x)));
+    set('lecturerKpiPrograms', (lecturer.programs || []).length);
+    status.textContent = total
+      ? 'Data survei dosen berhasil dimuat · ' + total.toLocaleString('id-ID') + ' responden'
+      : 'Belum ada respons pada tab Survei Dosen PMB. Data akan tampil setelah dosen mengisi survei.';
+    draw('lecturerChartInvolvement', lecturer.involvement);
+    draw('lecturerChartFrequency', lecturer.frequency);
+    draw('lecturerChartActivities', lecturer.activities);
+    draw('lecturerChartMedia', lecturer.media, 'doughnut');
+    draw('lecturerChartObstacles', lecturer.obstacles);
+    draw('lecturerChartSupport', lecturer.support);
+    draw('lecturerChartWillingness', lecturer.willingness);
+    draw('lecturerChartPrograms', lecturer.programs, 'doughnut');
+  };
+  const script = document.createElement('script');
+  script.src = api + '?callback=fstLecturerSummary&t=' + Date.now();
+  script.onerror = () => { status.textContent = 'Data belum dapat dimuat. Periksa akses dan deployment Google Apps Script.'; };
+  document.head.appendChild(script);
+})();
