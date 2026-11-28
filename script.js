@@ -215,3 +215,33 @@ function updateCampusBuilding(data){
   const total=Number(data.totalResponses||0);
   document.querySelectorAll('[data-building-total]').forEach(el=>el.textContent=total.toLocaleString('id-ID'));
 }
+
+
+/* Separate lecturer PMB participation survey */
+(() => {
+  const lecturerForm=document.getElementById('lecturerSurveyForm');
+  if(!lecturerForm)return;
+  const error=document.getElementById('lecturerError');
+  const button=document.getElementById('lecturerSubmit');
+  lecturerForm.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(!lecturerForm.reportValidity())return;
+    const data=Object.fromEntries(new FormData(lecturerForm).entries());
+    for(const name of ['bentuk_promosi','media_promosi','dukungan']){
+      data[name]=[...lecturerForm.querySelectorAll('input[name="'+name+'"]:checked')].map(input=>input.value);
+    }
+    data.survey_type='dosen_pmb';
+    data.consent=lecturerForm.querySelector('[name="consent"]').checked;
+    data.submitted_at=new Date().toISOString();
+    if(!SURVEY_API_URL){error.textContent='Endpoint survei belum dikonfigurasi.';return;}
+    button.disabled=true;button.textContent='Mengirim...';error.textContent='';
+    try{
+      await fetch(SURVEY_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+      lecturerForm.classList.add('hidden');
+      document.getElementById('lecturerSuccess').classList.remove('hidden');
+    }catch(err){
+      console.error(err);error.textContent='Pengiriman gagal. Periksa koneksi internet lalu coba kembali.';
+      button.disabled=false;button.innerHTML='Kirim survei dosen <span>↗</span>';
+    }
+  });
+})();
