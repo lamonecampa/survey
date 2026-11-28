@@ -13,7 +13,7 @@
 <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
 <nav class="nav wrap">
 <a class="brand" href="#"><img class="brand-logo" src="./assets/uibu-logo.png" alt="Logo resmi Universitas Insan Budi Utomo"><span><b>FST-UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a>
-<a class="nav-link" href="#hasil">Hasil survei</a><a class="nav-link" href="#survey-dosen">Survei dosen</a><a class="nav-link" href="#tentang">Tentang survei</a><a class="nav-link" href="#instagram">Instagram</a><a class="nav-cta" href="#survey">Survei calon mahasiswa <span>↗</span></a>
+<a class="nav-link" href="#hasil">Hasil survei</a><a class="nav-link" href="dosen.html">Survei dosen</a><a class="nav-link" href="#tentang">Tentang survei</a><a class="nav-link" href="#instagram">Instagram</a><a class="nav-cta" href="#survey">Survei calon mahasiswa <span>↗</span></a>
 </nav>
 <main>
 <section class="hero wrap hero-campus"><div class="sky-motion" aria-hidden="true"><span class="sky-cloud cloud-one"></span><span class="sky-cloud cloud-two"></span><span class="sky-cloud cloud-three"></span><span class="wind-streak wind-streak-one"></span><span class="wind-streak wind-streak-two"></span><span class="wind-streak wind-streak-three"></span></div>
@@ -167,63 +167,7 @@
 <div class="form-error" id="error" role="alert"></div><div class="form-controls"><button type="button" class="btn-back" id="back" disabled>Kembali</button><button type="button" class="btn btn-primary" id="next">Lanjut <span>→</span></button><button type="submit" class="btn btn-primary hidden" id="submit">Kirim jawaban <span>↗</span></button></div></form>
 <div class="success hidden" id="success"><div class="success-icon">✓</div><h3>Terima kasih!</h3><p>Jawaban survei berhasil disimpan pada perangkat ini sebagai demo. Hubungkan Supabase sebelum digunakan untuk pengumpulan data sebenarnya.</p><button class="btn btn-primary" onclick="location.reload()">Kembali ke beranda ↗</button></div></div></div></section>
 
-<section class="survey-section faculty-survey-section" id="survey-dosen">
-  <div class="wrap survey-layout">
-    <div class="survey-heading">
-      <div class="eyebrow"><i></i> SURVEI INTERNAL DOSEN</div>
-      <h2>Partisipasi dosen<br>dalam <em>promosi PMB.</em></h2>
-      <p>Partisipasi dosen dalam kegiatan promosi dan perekrutan mahasiswa baru mulai menunjukkan peningkatan. Beberapa dosen telah aktif melakukan promosi melalui pembuatan dan penyebaran flyer serta konten informasi PMB di media sosial. Upaya ini perlu terus ditingkatkan melalui keterlibatan seluruh dosen.</p>
-      <div class="privacy-note"><span>◇</span><span><b>Evaluasi internal</b><small>Jawaban digunakan untuk memetakan partisipasi dan kebutuhan dukungan promosi PMB FST UIBU.</small></span></div>
-    </div>
-    <div class="form-shell faculty-form-shell">
-      <div class="form-top"><div><span class="form-kicker">SURVEI DOSEN FST UIBU</span><b>Partisipasi dalam Promosi PMB</b></div><span class="counter">5–7 menit</span></div>
-      <div class="progress faculty-progress"><span></span></div>
-      <form id="lecturerSurveyForm">
-        <div class="survey-honeypot" aria-hidden="true"><label>Jangan isi kolom ini<input name="website" type="text" tabindex="-1" autocomplete="off"></label></div>
-        <label>Nama dosen <small>(opsional)</small><input name="nama_dosen" maxlength="100" placeholder="Nama dosen"></label>
-        <label>Program studi <select name="prodi_dosen" required><option value="">Pilih program studi</option><option>Teknik Mesin</option><option>Teknik Kimia</option><option>Teknik Elektro</option><option>Fakultas / lintas program studi</option></select></label>
-        <label>Apakah Bapak/Ibu pernah terlibat dalam kegiatan promosi atau perekrutan mahasiswa baru (PMB)? <select name="pernah_terlibat" required><option value="">Pilih jawaban</option><option>Ya</option><option>Belum</option></select></label>
-        <label>Seberapa sering Bapak/Ibu melakukan promosi PMB dalam satu tahun terakhir? <select name="frekuensi" required><option value="">Pilih frekuensi</option><option>Sering (lebih dari 5 kali)</option><option>Beberapa kali (2–5 kali)</option><option>Satu kali</option><option>Belum pernah</option></select></label>
-        <fieldset class="faculty-fieldset"><legend>Bentuk kegiatan promosi yang pernah dilakukan <small>(boleh pilih lebih dari satu)</small></legend><div class="choice-grid">
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Membuat flyer atau poster PMB"><span>Membuat flyer / poster</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Menyebarkan flyer atau poster"><span>Menyebarkan flyer / poster</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Membuat konten media sosial"><span>Membuat konten media sosial</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Membagikan konten PMB di media sosial"><span>Membagikan konten PMB</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Sosialisasi ke sekolah atau masyarakat"><span>Sosialisasi sekolah / masyarakat</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Mengajak calon mahasiswa secara langsung"><span>Mengajak calon mahasiswa</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Menghubungi jaringan atau relasi"><span>Menghubungi jaringan / relasi</span></label>
-          <label class="check"><input type="checkbox" name="bentuk_promosi" value="Lainnya"><span>Lainnya</span></label>
-        </div></fieldset>
-        <fieldset class="faculty-fieldset"><legend>Media yang digunakan untuk promosi <small>(boleh pilih lebih dari satu)</small></legend><div class="choice-grid">
-          <label class="check"><input type="checkbox" name="media_promosi" value="WhatsApp"><span>WhatsApp</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="Instagram"><span>Instagram</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="Facebook"><span>Facebook</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="TikTok"><span>TikTok</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="YouTube"><span>YouTube</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="Pertemuan langsung"><span>Pertemuan langsung</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="Media cetak"><span>Media cetak</span></label>
-          <label class="check"><input type="checkbox" name="media_promosi" value="Lainnya"><span>Lainnya</span></label>
-        </div></fieldset>
-        <label>Apa kendala utama dalam berpartisipasi pada promosi PMB? <select name="kendala" required><option value="">Pilih kendala</option><option>Keterbatasan waktu</option><option>Belum tersedia materi promosi</option><option>Belum memahami strategi atau kanal promosi</option><option>Keterbatasan jaringan sekolah / calon mahasiswa</option><option>Belum ada koordinasi atau pembagian tugas</option><option>Tidak mengalami kendala</option><option>Lainnya</option></select></label>
-        <label>Dukungan apa yang diperlukan agar dosen lebih aktif dalam promosi PMB? <small>(boleh pilih lebih dari satu)</small></label>
-        <div class="choice-grid">
-          <label class="check"><input type="checkbox" name="dukungan" value="Template flyer dan konten siap pakai"><span>Template flyer / konten siap pakai</span></label>
-          <label class="check"><input type="checkbox" name="dukungan" value="Kalender dan jadwal promosi"><span>Kalender dan jadwal promosi</span></label>
-          <label class="check"><input type="checkbox" name="dukungan" value="Pelatihan pembuatan konten"><span>Pelatihan pembuatan konten</span></label>
-          <label class="check"><input type="checkbox" name="dukungan" value="Pembagian tugas dan koordinasi"><span>Pembagian tugas dan koordinasi</span></label>
-          <label class="check"><input type="checkbox" name="dukungan" value="Data sekolah dan calon mahasiswa sasaran"><span>Data sekolah sasaran</span></label>
-          <label class="check"><input type="checkbox" name="dukungan" value="Dukungan anggaran atau fasilitas"><span>Dukungan anggaran / fasilitas</span></label>
-        </div>
-        <label>Kesediaan berpartisipasi dalam promosi PMB berikutnya <select name="kesediaan" required><option value="">Pilih jawaban</option><option>Sangat bersedia</option><option>Bersedia</option><option>Perlu koordinasi lebih lanjut</option><option>Belum dapat berpartisipasi</option></select></label>
-        <label>Saran untuk meningkatkan partisipasi dosen dalam promosi PMB <small>(opsional)</small><textarea name="saran" rows="3" maxlength="1000" placeholder="Tuliskan saran atau kebutuhan yang perlu dipertimbangkan..."></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" required><span>Saya menyatakan jawaban ini sesuai dengan kondisi dan pengalaman saya serta bersedia digunakan untuk evaluasi internal promosi PMB FST UIBU.</span></label>
-        <div class="form-error" id="lecturerError" role="alert"></div>
-        <div class="form-controls"><button type="submit" class="btn btn-primary" id="lecturerSubmit">Kirim survei dosen <span>↗</span></button></div>
-      </form>
-      <div class="success hidden" id="lecturerSuccess"><div class="success-icon">✓</div><h3>Terima kasih!</h3><p>Permintaan pengiriman survei dosen telah dikirim. Pengelola perlu memastikan data tercatat pada Google Sheets.</p><button type="button" class="btn btn-primary" onclick="location.reload()">Kembali ke beranda ↗</button></div>
-    </div>
-  </div>
-</section>
-<footer class="footer wrap"><a class="brand" href="#"><span class="brand-mark">U</span><span><b>UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a><span>Survei Sumber Informasi Calon Mahasiswa · 2026</span><a href="#survey">Survei calon mahasiswa ↑</a><a href="#survey-dosen">Survei dosen ↗</a></footer>
+
+<footer class="footer wrap"><a class="brand" href="#"><span class="brand-mark">U</span><span><b>UIBU</b><small>FAKULTAS SAINS & TEKNOLOGI</small></span></a><span>Survei Sumber Informasi Calon Mahasiswa · 2026</span><a href="#survey">Survei calon mahasiswa ↑</a><a href="dosen.html">Survei dosen ↗</a></footer>
 </main><script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="script.js"></script></body></html>
