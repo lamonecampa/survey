@@ -24,17 +24,38 @@ const HEADERS = [
 
 function setupSheet() {
   const ss = getDatabaseSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADERS);
-    sheet.setFrozenRows(1);
-    sheet.getRange(1, 1, 1, HEADERS.length)
+
+  // Tab survei calon mahasiswa
+  let studentSheet = ss.getSheetByName(SHEET_NAME);
+  if (!studentSheet) studentSheet = ss.insertSheet(SHEET_NAME);
+  if (studentSheet.getLastRow() === 0) {
+    studentSheet.appendRow(HEADERS);
+    studentSheet.setFrozenRows(1);
+    studentSheet.getRange(1, 1, 1, HEADERS.length)
       .setFontWeight('bold')
       .setBackground('#12345b')
       .setFontColor('#ffffff');
-    sheet.autoResizeColumns(1, HEADERS.length);
+    studentSheet.autoResizeColumns(1, HEADERS.length);
   }
+
+  // Tab survei dosen, dalam spreadsheet yang sama
+  const lecturerHeaders = [
+    'Timestamp','Nama Dosen','Program Studi','Pernah Terlibat','Frekuensi Promosi',
+    'Bentuk Promosi','Media Promosi','Kendala','Dukungan yang Dibutuhkan',
+    'Kesediaan Berpartisipasi','Saran','Persetujuan'
+  ];
+  let lecturerSheet = ss.getSheetByName('Survei Dosen PMB');
+  if (!lecturerSheet) lecturerSheet = ss.insertSheet('Survei Dosen PMB');
+  if (lecturerSheet.getLastRow() === 0) {
+    lecturerSheet.appendRow(lecturerHeaders);
+    lecturerSheet.setFrozenRows(1);
+    lecturerSheet.getRange(1, 1, 1, lecturerHeaders.length)
+      .setFontWeight('bold')
+      .setBackground('#12345b')
+      .setFontColor('#ffffff');
+    lecturerSheet.autoResizeColumns(1, lecturerHeaders.length);
+  }
+
   return ss.getUrl();
 }
 
