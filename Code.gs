@@ -373,6 +373,24 @@ function buildSummary_() {
       .sort((a, b) => b.count - a.count);
   };
 
+  // Ringkasan survei dosen dari tab terpisah dalam spreadsheet yang sama.
+  const lecturerSheet = ss.getSheetByName('Survei Dosen PMB');
+  const lecturerRows = lecturerSheet && lecturerSheet.getLastRow() > 1
+    ? lecturerSheet.getRange(2, 1, lecturerSheet.getLastRow() - 1, 12).getDisplayValues()
+    : [];
+  const lecturerCount = (index, split) => {
+    const map = {};
+    lecturerRows.forEach(row => {
+      const raw = String(row[index] || '').trim();
+      (split ? raw.split(/\\s*,\\s*/) : [raw])
+        .filter(Boolean)
+        .forEach(value => map[value] = (map[value] || 0) + 1);
+    });
+    return Object.keys(map)
+      .map(label => ({label, count: map[label]}))
+      .sort((a, b) => b.count - a.count);
+  };
+
   return {
     totalResponses: rows.length,
     schoolTypes: count(4),
@@ -383,6 +401,17 @@ function buildSummary_() {
     schoolMajors: count(6),
     referrals: count(13),
     reasons: count(15, true),
+    lecturer: {
+      totalResponses: lecturerRows.length,
+      programs: lecturerCount(2),
+      involvement: lecturerCount(3),
+      frequency: lecturerCount(4),
+      activities: lecturerCount(5, true),
+      media: lecturerCount(6, true),
+      obstacles: lecturerCount(7),
+      support: lecturerCount(8, true),
+      willingness: lecturerCount(9)
+    },
     updatedAt: new Date().toISOString()
   };
 }
