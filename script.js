@@ -10,7 +10,7 @@ next.addEventListener('click',()=>{if(validateStep()){current=Math.min(current+1
 back.addEventListener('click',()=>{current=Math.max(current-1,0);render();});
 document.getElementById('source').addEventListener('change',e=>document.getElementById('socialFields').classList.toggle('hidden',e.target.value!=='Media sosial'));
 document.getElementById('relative').addEventListener('change',e=>document.getElementById('relativeFields').classList.toggle('hidden',e.target.value!=='Ya'));
-const SURVEY_API_URL = "https://script.google.com/macros/s/AKfycbwnIU5q50Oc8Aem3NoDwnCkG3i4cgzcmcXIIMEpFSfKkCzQCLV9qXM3XUCbFRuFu44M/exec"; // Google Apps Script Web App FST-UIBU.
+const SURVEY_API_URL = "https://script.google.com/macros/s/AKfycbzx_6Jn7SNXxvEe4qJICPrAvd9XFYzNU6PKDGn-N258aXqzkkNKRL_tuDv4pyfW0YU/exec"; // Google Apps Script Web App FST-UIBU.
 form.addEventListener('submit',async e=>{
   e.preventDefault();
   if(!validateStep())return;
