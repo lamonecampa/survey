@@ -200,12 +200,54 @@ const SURVEY_SUMMARY_URL = SURVEY_API_URL; // Dashboard memakai endpoint yang sa
     draw('chartReason',data.reasons);
     setStatus('Data diperbarui · '+total.toLocaleString('id-ID')+' responden',true);
     updateCampusBuilding(data);
+    renderLecturerResults(data.lecturer||{});
   };
   const script=document.createElement('script');
   script.src=SURVEY_SUMMARY_URL+'?callback='+callbackName+'&t='+Date.now();
   script.onerror=()=>setStatus('Google Sheets belum dapat dibaca · periksa URL deployment dan akses Web App');
   document.head.appendChild(script);
 })();
+
+
+function renderLecturerResults(data){
+  const status=document.getElementById('lecturerResultsStatus');
+  const total=Number(data.totalResponses||0);
+  const countOf=(items,label)=>((items||[]).find(item=>String(item.label).toLowerCase()===label.toLowerCase())||{}).count||0;
+  const involved=countOf(data.involvement,'Ya');
+  const willing=(data.willingness||[]).filter(item=>/sangat bersedia|^bersedia$/i.test(item.label)).reduce((sum,item)=>sum+Number(item.count||0),0);
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=Number(value||0).toLocaleString('id-ID');};
+  set('lecturerKpiTotal',total);
+  set('lecturerKpiInvolved',involved);
+  set('lecturerKpiWilling',willing);
+  set('lecturerKpiPrograms',(data.programs||[]).length);
+  if(status)status.textContent=total
+    ? 'Data survei dosen diperbarui · '+total.toLocaleString('id-ID')+' responden'
+    : 'Belum ada respons survei dosen pada tab Survei Dosen PMB';
+  drawLecturerChart('lecturerChartInvolvement',data.involvement);
+  drawLecturerChart('lecturerChartFrequency',data.frequency);
+  drawLecturerChart('lecturerChartActivities',data.activities);
+  drawLecturerChart('lecturerChartMedia',data.media,'doughnut');
+  drawLecturerChart('lecturerChartObstacles',data.obstacles);
+  drawLecturerChart('lecturerChartSupport',data.support);
+  drawLecturerChart('lecturerChartWillingness',data.willingness);
+  drawLecturerChart('lecturerChartPrograms',data.programs,'doughnut');
+}
+
+function drawLecturerChart(id,items,type='bar'){
+  const card=document.getElementById(id)?.closest('.result-chart');
+  const canvas=document.getElementById(id);
+  const rows=Array.isArray(items)?items.filter(item=>Number(item.count||0)>0):[];
+  if(!canvas||!card||!rows.length)return;
+  card.classList.add('has-data');
+  const colors=['#2478bd','#28b9b0','#f28c28','#12345b','#55b9e8','#79a8cf','#80cfc5','#dca45d'];
+  new Chart(canvas,{
+    type:type==='doughnut'?'doughnut':'bar',
+    data:{labels:rows.map(item=>String(item.label)),datasets:[{data:rows.map(item=>Number(item.count)),backgroundColor:colors,borderRadius:type==='bar'?6:2,borderWidth:0,barThickness:'flex',maxBarThickness:26}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:type==='bar'?'y':'x',
+      plugins:{legend:{display:type==='doughnut',position:'bottom',labels:{boxWidth:10,usePointStyle:true,font:{family:'DM Sans',size:10}}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+(ctx.parsed.x??ctx.parsed)+' dosen'}}},
+      scales:type==='doughnut'?{}:{x:{beginAtZero:true,ticks:{precision:0,font:{size:9}},grid:{color:'#edf2f6'}},y:{ticks:{font:{size:10}},grid:{display:false}}}}
+  });
+}
 
 
 function updateCampusBuilding(data){
