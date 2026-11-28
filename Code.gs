@@ -53,6 +53,11 @@ function doPost(e) {
       return json_({ok:false,message:'Permintaan tidak valid.'});
     }
 
+    // Formulir dosen menggunakan sheet terpisah agar tidak bercampur dengan data calon mahasiswa.
+    if (payload.survey_type === 'dosen_pmb') {
+      return appendLecturerSurvey_(payload);
+    }
+
     // Validasi persetujuan dan kolom wajib sesuai formulir.
     if (payload.consent !== true) {
       return json_({ok:false,message:'Persetujuan wajib diisi.'});
@@ -127,6 +132,58 @@ function doPost(e) {
     return json_({ok:true});
   } catch (err) {
     return json_({ok:false,message:String(err.message || err)});
+  }
+}
+
+
+/**
+ * Menyimpan survei partisipasi dosen pada tab terpisah.
+ * Tidak mengubah struktur atau ringkasan survei calon mahasiswa.
+ */
+function appendLecturerSurvey_(payload) {
+  if (payload.consent !== true) {
+    return json_({ok:false,message:'Persetujuan wajib diisi.'});
+  }
+  const required = ['prodi_dosen','pernah_terlibat','frekuensi','kendala','kesediaan'];
+  for (const key of required) {
+    if (!String(payload[key] || '').trim()) {
+      return json_({ok:false,message:'Kolom wajib belum lengkap: ' + key});
+    }
+  }
+  const headers = [
+    'Timestamp','Nama Dosen','Program Studi','Pernah Terlibat','Frekuensi Promosi',
+    'Bentuk Promosi','Media Promosi','Kendala','Dukungan yang Dibutuhkan',
+    'Kesediaan Berpartisipasi','Saran','Persetujuan'
+  ];
+  const clean = value => Array.isArray(value)
+    ? value.join(', ').slice(0,1500)
+    : String(value == null ? '' : value).trim().slice(0,1500);
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+    const ss = getDatabaseSpreadsheet();
+    const name = 'Survei Dosen PMB';
+    let sheet = ss.getSheetByName(name);
+    if (!sheet) {
+      sheet = ss.insertSheet(name);
+      sheet.appendRow(headers);
+      sheet.setFrozenRows(1);
+      sheet.getRange(1,1,1,headers.length)
+        .setFontWeight('bold').setBackground('#12345b').setFontColor('#ffffff');
+      sheet.autoResizeColumns(1,headers.length);
+    }
+    sheet.appendRow([
+      new Date(),clean(payload.nama_dosen),clean(payload.prodi_dosen),
+      clean(payload.pernah_terlibat),clean(payload.frekuensi),
+      clean(payload.bentuk_promosi),clean(payload.media_promosi),
+      clean(payload.kendala),clean(payload.dukungan),clean(payload.kesediaan),
+      clean(payload.saran),'Ya'
+    ]);
+    return json_({ok:true});
+  } catch (err) {
+    return json_({ok:false,message:String(err.message || err)});
+  } finally {
+    if (lock.hasLock()) lock.releaseLock();
   }
 }
 
