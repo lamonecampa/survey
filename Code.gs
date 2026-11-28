@@ -364,7 +364,7 @@ function buildSummary_() {
     const map = {};
     rows.forEach(row => {
       const raw = String(row[index] || '').trim();
-      (split ? raw.split(/\\s*,\\s*/) : [raw])
+      (split ? raw.split(/\s*,\s*/) : [raw])
         .filter(Boolean)
         .forEach(value => map[value] = (map[value] || 0) + 1);
     });
@@ -382,7 +382,7 @@ function buildSummary_() {
     const map = {};
     lecturerRows.forEach(row => {
       const raw = String(row[index] || '').trim();
-      (split ? raw.split(/\\s*,\\s*/) : [raw])
+      (split ? raw.split(/\s*,\s*/) : [raw])
         .filter(Boolean)
         .forEach(value => map[value] = (map[value] || 0) + 1);
     });
