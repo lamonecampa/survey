@@ -323,9 +323,9 @@ button:disabled,.btn:disabled{cursor:not-allowed}
  .nav{height:auto;min-height:72px;display:flex;flex-wrap:wrap;gap:10px;padding:12px 0}
  .nav .brand{flex:1 0 100%;margin-right:0}
  .nav .nav-link{display:none}
- .nav .nav-link[href="#survey-dosen"]{display:inline-flex;align-items:center;justify-content:center;order:2;padding:10px 15px;border:1px solid #b9d9e9;border-radius:999px;background:#fff;color:#1766a7;font-size:11px;font-weight:800}
- .nav .nav-link[href="#survey-dosen"]:after{display:none}
- .nav .nav-link[href="#survey-dosen"]:hover{background:#eaf6fb;transform:translateY(-3px);box-shadow:0 8px 18px #2478bd22}
+ .nav .nav-link[href="dosen.html"]{display:inline-flex;align-items:center;justify-content:center;order:2;padding:10px 15px;border:1px solid #b9d9e9;border-radius:999px;background:#fff;color:#1766a7;font-size:11px;font-weight:800}
+ .nav .nav-link[href="dosen.html"]:after{display:none}
+ .nav .nav-link[href="dosen.html"]:hover{background:#eaf6fb;transform:translateY(-3px);box-shadow:0 8px 18px #2478bd22}
  .nav .nav-cta{order:3;margin-left:auto;padding:10px 14px}
 }
 
